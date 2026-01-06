@@ -1,0 +1,2886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Stopwatch Pro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+          /* Primitive Color Tokens */
+          --color-white: rgba(255, 255, 255, 1);
+          --color-black: rgba(0, 0, 0, 1);
+          --color-cream-50: rgba(252, 252, 249, 1);
+          --color-cream-100: rgba(255, 255, 253, 1);
+          --color-gray-200: rgba(245, 245, 245, 1);
+          --color-gray-300: rgba(167, 169, 169, 1);
+          --color-gray-400: rgba(119, 124, 124, 1);
+          --color-slate-500: rgba(98, 108, 113, 1);
+          --color-brown-600: rgba(94, 82, 64, 1);
+          --color-charcoal-700: rgba(31, 33, 33, 1);
+          --color-charcoal-800: rgba(38, 40, 40, 1);
+          --color-slate-900: rgba(19, 52, 59, 1);
+          --color-teal-300: rgba(50, 184, 198, 1);
+          --color-teal-400: rgba(45, 166, 178, 1);
+          --color-teal-500: rgba(33, 128, 141, 1);
+          --color-teal-600: rgba(29, 116, 128, 1);
+          --color-teal-700: rgba(26, 104, 115, 1);
+          --color-teal-800: rgba(41, 150, 161, 1);
+          --color-red-400: rgba(255, 84, 89, 1);
+          --color-red-500: rgba(192, 21, 47, 1);
+          --color-orange-400: rgba(230, 129, 97, 1);
+          --color-orange-500: rgba(168, 75, 47, 1);
+        
+          /* RGB versions for opacity control */
+          --color-brown-600-rgb: 94, 82, 64;
+          --color-teal-500-rgb: 33, 128, 141;
+          --color-slate-900-rgb: 19, 52, 59;
+          --color-slate-500-rgb: 98, 108, 113;
+          --color-red-500-rgb: 192, 21, 47;
+          --color-red-400-rgb: 255, 84, 89;
+          --color-orange-500-rgb: 168, 75, 47;
+          --color-orange-400-rgb: 230, 129, 97;
+        
+          /* Background color tokens (Light Mode) */
+          --color-bg-1: rgba(59, 130, 246, 0.08); /* Light blue */
+          --color-bg-2: rgba(245, 158, 11, 0.08); /* Light yellow */
+          --color-bg-3: rgba(34, 197, 94, 0.08); /* Light green */
+          --color-bg-4: rgba(239, 68, 68, 0.08); /* Light red */
+          --color-bg-5: rgba(147, 51, 234, 0.08); /* Light purple */
+          --color-bg-6: rgba(249, 115, 22, 0.08); /* Light orange */
+          --color-bg-7: rgba(236, 72, 153, 0.08); /* Light pink */
+          --color-bg-8: rgba(6, 182, 212, 0.08); /* Light cyan */
+        
+          /* Semantic Color Tokens (Light Mode) */
+          --color-background: var(--color-cream-50);
+          --color-surface: var(--color-cream-100);
+          --color-text: var(--color-slate-900);
+          --color-text-secondary: var(--color-slate-500);
+          --color-primary: var(--color-teal-500);
+          --color-primary-hover: var(--color-teal-600);
+          --color-primary-active: var(--color-teal-700);
+          --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+          --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-btn-primary-text: var(--color-cream-50);
+          --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-error: var(--color-red-500);
+          --color-success: var(--color-teal-500);
+          --color-warning: var(--color-orange-500);
+          --color-info: var(--color-slate-500);
+          --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+          --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+        
+          /* Common style patterns */
+          --focus-ring: 0 0 0 3px var(--color-focus-ring);
+          --focus-outline: 2px solid var(--color-primary);
+          --status-bg-opacity: 0.15;
+          --status-border-opacity: 0.25;
+          --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        
+          /* RGB versions for opacity control */
+          --color-success-rgb: 33, 128, 141;
+          --color-error-rgb: 192, 21, 47;
+          --color-warning-rgb: 168, 75, 47;
+          --color-info-rgb: 98, 108, 113;
+        
+          /* Typography */
+          --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+            BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+            Monaco, Consolas, monospace;
+          --font-size-xs: 11px;
+          --font-size-sm: 12px;
+          --font-size-base: 14px;
+          --font-size-md: 14px;
+          --font-size-lg: 16px;
+          --font-size-xl: 18px;
+          --font-size-2xl: 20px;
+          --font-size-3xl: 24px;
+          --font-size-4xl: 30px;
+          --font-weight-normal: 400;
+          --font-weight-medium: 500;
+          --font-weight-semibold: 550;
+          --font-weight-bold: 600;
+          --line-height-tight: 1.2;
+          --line-height-normal: 1.5;
+          --letter-spacing-tight: -0.01em;
+        
+          /* Spacing */
+          --space-0: 0;
+          --space-1: 1px;
+          --space-2: 2px;
+          --space-4: 4px;
+          --space-6: 6px;
+          --space-8: 8px;
+          --space-10: 10px;
+          --space-12: 12px;
+          --space-16: 16px;
+          --space-20: 20px;
+          --space-24: 24px;
+          --space-32: 32px;
+        
+          /* Border Radius */
+          --radius-sm: 6px;
+          --radius-base: 8px;
+          --radius-md: 10px;
+          --radius-lg: 12px;
+          --radius-full: 9999px;
+        
+          /* Shadows */
+          --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+          --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+          --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+            0 2px 4px -1px rgba(0, 0, 0, 0.02);
+          --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+            0 4px 6px -2px rgba(0, 0, 0, 0.02);
+          --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+        
+          /* Animation */
+          --duration-fast: 150ms;
+          --duration-normal: 250ms;
+          --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        
+          /* Layout */
+          --container-sm: 640px;
+          --container-md: 768px;
+          --container-lg: 1024px;
+          --container-xl: 1280px;
+        }
+        
+        /* Dark mode colors */
+        @media (prefers-color-scheme: dark) {
+          :root {
+            /* RGB versions for opacity control (Dark Mode) */
+            --color-gray-400-rgb: 119, 124, 124;
+            --color-teal-300-rgb: 50, 184, 198;
+            --color-gray-300-rgb: 167, 169, 169;
+            --color-gray-200-rgb: 245, 245, 245;
+        
+            /* Background color tokens (Dark Mode) */
+            --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
+            --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
+            --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
+            --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
+            --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
+            --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
+            --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
+            --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+        
+            /* Semantic Color Tokens (Dark Mode) */
+            --color-background: var(--color-charcoal-700);
+            --color-surface: var(--color-charcoal-800);
+            --color-text: var(--color-gray-200);
+            --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+            --color-primary: var(--color-teal-300);
+            --color-primary-hover: var(--color-teal-400);
+            --color-primary-active: var(--color-teal-800);
+            --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+            --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+            --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+            --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+            --color-error: var(--color-red-400);
+            --color-success: var(--color-teal-300);
+            --color-warning: var(--color-orange-400);
+            --color-info: var(--color-gray-300);
+            --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+            --color-btn-primary-text: var(--color-slate-900);
+            --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+            --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+            --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+            --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+            --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+            --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+        
+            /* Common style patterns - updated for dark mode */
+            --focus-ring: 0 0 0 3px var(--color-focus-ring);
+            --focus-outline: 2px solid var(--color-primary);
+            --status-bg-opacity: 0.15;
+            --status-border-opacity: 0.25;
+            --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        
+            /* RGB versions for dark mode */
+            --color-success-rgb: var(--color-teal-300-rgb);
+            --color-error-rgb: var(--color-red-400-rgb);
+            --color-warning-rgb: var(--color-orange-400-rgb);
+            --color-info-rgb: var(--color-gray-300-rgb);
+          }
+        }
+        
+        /* Data attribute for manual theme switching */
+        [data-color-scheme="dark"] {
+          /* RGB versions for opacity control (dark mode) */
+          --color-gray-400-rgb: 119, 124, 124;
+          --color-teal-300-rgb: 50, 184, 198;
+          --color-gray-300-rgb: 167, 169, 169;
+          --color-gray-200-rgb: 245, 245, 245;
+        
+          /* Colorful background palette - Dark Mode */
+          --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
+          --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
+          --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
+          --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
+          --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
+          --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
+          --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
+          --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+        
+          /* Semantic Color Tokens (Dark Mode) */
+          --color-background: var(--color-charcoal-700);
+          --color-surface: var(--color-charcoal-800);
+          --color-text: var(--color-gray-200);
+          --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+          --color-primary: var(--color-teal-300);
+          --color-primary-hover: var(--color-teal-400);
+          --color-primary-active: var(--color-teal-800);
+          --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+          --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+          --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+          --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+          --color-error: var(--color-red-400);
+          --color-success: var(--color-teal-300);
+          --color-warning: var(--color-orange-400);
+          --color-info: var(--color-gray-300);
+          --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+          --color-btn-primary-text: var(--color-slate-900);
+          --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+          --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+          --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+          --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+          --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+        
+          /* Common style patterns - updated for dark mode */
+          --focus-ring: 0 0 0 3px var(--color-focus-ring);
+          --focus-outline: 2px solid var(--color-primary);
+          --status-bg-opacity: 0.15;
+          --status-border-opacity: 0.25;
+          --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        
+          /* RGB versions for dark mode */
+          --color-success-rgb: var(--color-teal-300-rgb);
+          --color-error-rgb: var(--color-red-400-rgb);
+          --color-warning-rgb: var(--color-orange-400-rgb);
+          --color-info-rgb: var(--color-gray-300-rgb);
+        }
+        
+        [data-color-scheme="light"] {
+          /* RGB versions for opacity control (light mode) */
+          --color-brown-600-rgb: 94, 82, 64;
+          --color-teal-500-rgb: 33, 128, 141;
+          --color-slate-900-rgb: 19, 52, 59;
+        
+          /* Semantic Color Tokens (Light Mode) */
+          --color-background: var(--color-cream-50);
+          --color-surface: var(--color-cream-100);
+          --color-text: var(--color-slate-900);
+          --color-text-secondary: var(--color-slate-500);
+          --color-primary: var(--color-teal-500);
+          --color-primary-hover: var(--color-teal-600);
+          --color-primary-active: var(--color-teal-700);
+          --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+          --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+          --color-btn-primary-text: var(--color-cream-50);
+          --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+          --color-error: var(--color-red-500);
+          --color-success: var(--color-teal-500);
+          --color-warning: var(--color-orange-500);
+          --color-info: var(--color-slate-500);
+          --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+        
+          /* RGB versions for light mode */
+          --color-success-rgb: var(--color-teal-500-rgb);
+          --color-error-rgb: var(--color-red-500-rgb);
+          --color-warning-rgb: var(--color-orange-500-rgb);
+          --color-info-rgb: var(--color-slate-500-rgb);
+        }
+        
+        /* Base styles */
+        html {
+          font-size: var(--font-size-base);
+          font-family: var(--font-family-base);
+          line-height: var(--line-height-normal);
+          color: var(--color-text);
+          background-color: var(--color-background);
+          -webkit-font-smoothing: antialiased;
+          box-sizing: border-box;
+        }
+        
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        
+        *,
+        *::before,
+        *::after {
+          box-sizing: inherit;
+        }
+        
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          margin: 0;
+          font-weight: var(--font-weight-semibold);
+          line-height: var(--line-height-tight);
+          color: var(--color-text);
+          letter-spacing: var(--letter-spacing-tight);
+        }
+        
+        h1 {
+          font-size: var(--font-size-4xl);
+        }
+        h2 {
+          font-size: var(--font-size-3xl);
+        }
+        h3 {
+          font-size: var(--font-size-2xl);
+        }
+        h4 {
+          font-size: var(--font-size-xl);
+        }
+        h5 {
+          font-size: var(--font-size-lg);
+        }
+        h6 {
+          font-size: var(--font-size-md);
+        }
+        
+        p {
+          margin: 0 0 var(--space-16) 0;
+        }
+        
+        a {
+          color: var(--color-primary);
+          text-decoration: none;
+          transition: color var(--duration-fast) var(--ease-standard);
+        }
+        
+        a:hover {
+          color: var(--color-primary-hover);
+        }
+        
+        code,
+        pre {
+          font-family: var(--font-family-mono);
+          font-size: calc(var(--font-size-base) * 0.95);
+          background-color: var(--color-secondary);
+          border-radius: var(--radius-sm);
+        }
+        
+        code {
+          padding: var(--space-1) var(--space-4);
+        }
+        
+        pre {
+          padding: var(--space-16);
+          margin: var(--space-16) 0;
+          overflow: auto;
+          border: 1px solid var(--color-border);
+        }
+        
+        pre code {
+          background: none;
+          padding: 0;
+        }
+        
+        /* Buttons */
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: var(--space-8) var(--space-16);
+          border-radius: var(--radius-base);
+          font-size: var(--font-size-base);
+          font-weight: 500;
+          line-height: 1.5;
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+          border: none;
+          text-decoration: none;
+          position: relative;
+        }
+        
+        .btn:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
+        
+        .btn--primary {
+          background: var(--color-primary);
+          color: var(--color-btn-primary-text);
+        }
+        
+        .btn--primary:hover {
+          background: var(--color-primary-hover);
+        }
+        
+        .btn--primary:active {
+          background: var(--color-primary-active);
+        }
+        
+        .btn--secondary {
+          background: var(--color-secondary);
+          color: var(--color-text);
+        }
+        
+        .btn--secondary:hover {
+          background: var(--color-secondary-hover);
+        }
+        
+        .btn--secondary:active {
+          background: var(--color-secondary-active);
+        }
+        
+        .btn--outline {
+          background: transparent;
+          border: 1px solid var(--color-border);
+          color: var(--color-text);
+        }
+        
+        .btn--outline:hover {
+          background: var(--color-secondary);
+        }
+        
+        .btn--sm {
+          padding: var(--space-4) var(--space-12);
+          font-size: var(--font-size-sm);
+          border-radius: var(--radius-sm);
+        }
+        
+        .btn--lg {
+          padding: var(--space-10) var(--space-20);
+          font-size: var(--font-size-lg);
+          border-radius: var(--radius-md);
+        }
+        
+        .btn--full-width {
+          width: 100%;
+        }
+        
+        .btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        
+        /* Form elements */
+        .form-control {
+          display: block;
+          width: 100%;
+          padding: var(--space-8) var(--space-12);
+          font-size: var(--font-size-md);
+          line-height: 1.5;
+          color: var(--color-text);
+          background-color: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-base);
+          transition: border-color var(--duration-fast) var(--ease-standard),
+            box-shadow var(--duration-fast) var(--ease-standard);
+        }
+        
+        textarea.form-control {
+          font-family: var(--font-family-base);
+          font-size: var(--font-size-base);
+        }
+        
+        select.form-control {
+          padding: var(--space-8) var(--space-12);
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          background-image: var(--select-caret-light);
+          background-repeat: no-repeat;
+          background-position: right var(--space-12) center;
+          background-size: 16px;
+          padding-right: var(--space-32);
+        }
+        
+        /* Add a dark mode specific caret */
+        @media (prefers-color-scheme: dark) {
+          select.form-control {
+            background-image: var(--select-caret-dark);
+          }
+        }
+        
+        /* Also handle data-color-scheme */
+        [data-color-scheme="dark"] select.form-control {
+          background-image: var(--select-caret-dark);
+        }
+        
+        [data-color-scheme="light"] select.form-control {
+          background-image: var(--select-caret-light);
+        }
+        
+        .form-control:focus {
+          border-color: var(--color-primary);
+          outline: var(--focus-outline);
+        }
+        
+        .form-label {
+          display: block;
+          margin-bottom: var(--space-8);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--font-size-sm);
+        }
+        
+        .form-group {
+          margin-bottom: var(--space-16);
+        }
+        
+        /* Card component */
+        .card {
+          background-color: var(--color-surface);
+          border-radius: var(--radius-lg);
+          border: 1px solid var(--color-card-border);
+          box-shadow: var(--shadow-sm);
+          overflow: hidden;
+          transition: box-shadow var(--duration-normal) var(--ease-standard);
+        }
+        
+        .card:hover {
+          box-shadow: var(--shadow-md);
+        }
+        
+        .card__body {
+          padding: var(--space-16);
+        }
+        
+        .card__header,
+        .card__footer {
+          padding: var(--space-16);
+          border-bottom: 1px solid var(--color-card-border-inner);
+        }
+        
+        /* Status indicators - simplified with CSS variables */
+        .status {
+          display: inline-flex;
+          align-items: center;
+          padding: var(--space-6) var(--space-12);
+          border-radius: var(--radius-full);
+          font-weight: var(--font-weight-medium);
+          font-size: var(--font-size-sm);
+        }
+        
+        .status--success {
+          background-color: rgba(
+            var(--color-success-rgb, 33, 128, 141),
+            var(--status-bg-opacity)
+          );
+          color: var(--color-success);
+          border: 1px solid
+            rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
+        }
+        
+        .status--error {
+          background-color: rgba(
+            var(--color-error-rgb, 192, 21, 47),
+            var(--status-bg-opacity)
+          );
+          color: var(--color-error);
+          border: 1px solid
+            rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
+        }
+        
+        .status--warning {
+          background-color: rgba(
+            var(--color-warning-rgb, 168, 75, 47),
+            var(--status-bg-opacity)
+          );
+          color: var(--color-warning);
+          border: 1px solid
+            rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
+        }
+        
+        .status--info {
+          background-color: rgba(
+            var(--color-info-rgb, 98, 108, 113),
+            var(--status-bg-opacity)
+          );
+          color: var(--color-info);
+          border: 1px solid
+            rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
+        }
+        
+        /* Container layout */
+        .container {
+          width: 100%;
+          margin-right: auto;
+          margin-left: auto;
+          padding-right: var(--space-16);
+          padding-left: var(--space-16);
+        }
+        
+        @media (min-width: 640px) {
+          .container {
+            max-width: var(--container-sm);
+          }
+        }
+        @media (min-width: 768px) {
+          .container {
+            max-width: var(--container-md);
+          }
+        }
+        @media (min-width: 1024px) {
+          .container {
+            max-width: var(--container-lg);
+          }
+        }
+        @media (min-width: 1280px) {
+          .container {
+            max-width: var(--container-xl);
+          }
+        }
+        
+        /* Utility classes */
+        .flex {
+          display: flex;
+        }
+        .flex-col {
+          flex-direction: column;
+        }
+        .items-center {
+          align-items: center;
+        }
+        .justify-center {
+          justify-content: center;
+        }
+        .justify-between {
+          justify-content: space-between;
+        }
+        .gap-4 {
+          gap: var(--space-4);
+        }
+        .gap-8 {
+          gap: var(--space-8);
+        }
+        .gap-16 {
+          gap: var(--space-16);
+        }
+        
+        .m-0 {
+          margin: 0;
+        }
+        .mt-8 {
+          margin-top: var(--space-8);
+        }
+        .mb-8 {
+          margin-bottom: var(--space-8);
+        }
+        .mx-8 {
+          margin-left: var(--space-8);
+          margin-right: var(--space-8);
+        }
+        .my-8 {
+          margin-top: var(--space-8);
+          margin-bottom: var(--space-8);
+        }
+        
+        .p-0 {
+          padding: 0;
+        }
+        .py-8 {
+          padding-top: var(--space-8);
+          padding-bottom: var(--space-8);
+        }
+        .px-8 {
+          padding-left: var(--space-8);
+          padding-right: var(--space-8);
+        }
+        .py-16 {
+          padding-top: var(--space-16);
+          padding-bottom: var(--space-16);
+        }
+        .px-16 {
+          padding-left: var(--space-16);
+          padding-right: var(--space-16);
+        }
+        
+        .block {
+          display: block;
+        }
+        .hidden {
+          display: none;
+        }
+        
+        /* Accessibility */
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+        
+        :focus-visible {
+          outline: var(--focus-outline);
+          outline-offset: 2px;
+        }
+        
+        /* Dark mode specifics */
+        [data-color-scheme="dark"] .btn--outline {
+          border: 1px solid var(--color-border-secondary);
+        }
+        
+        @font-face {
+          font-family: 'FKGroteskNeue';
+          src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+            format('woff2');
+        }
+        
+        /* END PERPLEXITY DESIGN SYSTEM */
+
+        /* ========================================
+        FUTURISTIC STOPWATCH STYLES
+        ========================================
+        */
+
+        /* Design System Variables */
+        :root {
+          /* Primitive Color Tokens */
+          --color-white: rgba(255, 255, 255, 1);
+          --color-black: rgba(0, 0, 0, 1);
+          --color-cream-50: rgba(252, 252, 249, 1);
+          --color-cream-100: rgba(255, 255, 253, 1);
+          --color-gray-200: rgba(245, 245, 245, 1);
+          --color-gray-300: rgba(167, 169, 169, 1);
+          --color-gray-400: rgba(119, 124, 124, 1);
+          --color-slate-500: rgba(98, 108, 113, 1);
+          --color-brown-600: rgba(94, 82, 64, 1);
+          --color-charcoal-700: rgba(31, 33, 33, 1);
+          --color-charcoal-800: rgba(38, 40, 40, 1);
+          --color-slate-900: rgba(19, 52, 59, 1);
+          --color-teal-300: rgba(50, 184, 198, 1);
+          --color-teal-400: rgba(45, 166, 178, 1);
+          --color-teal-500: rgba(33, 128, 141, 1);
+          --color-teal-600: rgba(29, 116, 128, 1);
+          --color-teal-700: rgba(26, 104, 115, 1);
+          --color-teal-800: rgba(41, 150, 161, 1);
+          --color-red-400: rgba(255, 84, 89, 1);
+          --color-red-500: rgba(192, 21, 47, 1);
+          --color-orange-400: rgba(230, 129, 97, 1);
+          --color-orange-500: rgba(168, 75, 47, 1);
+        
+          /* Futuristic Theme Colors */
+          --primary-color: #00f3ff;
+          --secondary-color: #0099ff;
+          --accent-color: #ff00ff;
+          --bg-dark: #0a0e27;
+          --bg-darker: #050811;
+          --surface-color: rgba(20, 25, 50, 0.6);
+          --glass-bg: rgba(255, 255, 255, 0.05);
+          --glass-border: rgba(255, 255, 255, 0.1);
+          --glow-color: rgba(0, 243, 255, 0.5);
+          
+          /* Status Colors */
+          --color-idle: #00f3ff;
+          --color-running: #39ff14;
+          --color-paused: #ffaa00;
+          --color-fastest: #39ff14;
+          --color-slowest: #ff6b6b;
+        
+          /* Typography */
+          --font-display: 'Orbitron', monospace;
+          --font-body: 'Rajdhani', sans-serif;
+          --font-size-xs: 11px;
+          --font-size-sm: 12px;
+          --font-size-base: 14px;
+          --font-size-md: 16px;
+          --font-size-lg: 18px;
+          --font-size-xl: 24px;
+          --font-size-2xl: 32px;
+          --font-size-3xl: 48px;
+          --font-size-4xl: 64px;
+        
+          /* Spacing */
+          --space-4: 4px;
+          --space-8: 8px;
+          --space-12: 12px;
+          --space-16: 16px;
+          --space-20: 20px;
+          --space-24: 24px;
+          --space-32: 32px;
+          --space-48: 48px;
+        
+          /* Border Radius */
+          --radius-sm: 6px;
+          --radius-base: 12px;
+          --radius-lg: 16px;
+          --radius-xl: 24px;
+          --radius-full: 9999px;
+        
+          /* Animations */
+          --duration-fast: 150ms;
+          --duration-normal: 250ms;
+          --duration-slow: 400ms;
+          --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Base Styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        html, body {
+          width: 100%;
+          overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        body {
+          font-family: var(--font-body);
+          background: var(--bg-darker);
+          color: var(--color-white);
+          line-height: 1.6;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 50%, var(--bg-darker) 100%);
+          overflow: hidden;
+        }
+        
+        .grid-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: 
+            linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+          background-size: 50px 50px;
+          animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+        
+        .particles {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+        
+        .particle {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: var(--primary-color);
+          border-radius: 50%;
+          animation: particleFloat 10s infinite;
+          opacity: 0.3;
+          box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        @keyframes particleFloat {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(-100px) translateX(50px); }
+        }
+        
+        /* Main Container */
+        .container {
+          position: relative;
+          z-index: 1;
+          max-width: 900px;
+          margin: 0 auto;
+          padding: var(--space-24);
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-24);
+          animation: fadeIn 0.8s var(--ease-standard);
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Header */
+        .header {
+          text-align: center;
+          padding: var(--space-24) 0 var(--space-12) 0; /* Reduced bottom padding */
+        }
+        
+        .title {
+          font-family: var(--font-display);
+          font-size: var(--font-size-3xl);
+          font-weight: 900;
+          letter-spacing: 4px;
+          background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 0 30px var(--glow-color);
+          margin-bottom: var(--space-8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-12);
+          flex-wrap: wrap;
+        }
+        
+        .title-icon {
+          font-size: var(--font-size-3xl);
+          filter: drop-shadow(0 0 10px var(--primary-color));
+        }
+        
+        .title-badge {
+          font-size: var(--font-size-xs);
+          padding: var(--space-4) var(--space-12);
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-full);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          letter-spacing: 2px;
+          animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(0.95); }
+        }
+        
+        .subtitle {
+          font-size: var(--font-size-md);
+          color: rgba(255, 255, 255, 0.6);
+          letter-spacing: 2px;
+          text-transform: uppercase;
+        }
+        
+        /* Preset Section */
+        .preset-section {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-16); /* Reduced padding */
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .preset-label {
+          display: block;
+          font-size: var(--font-size-sm);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: var(--space-8);
+          color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .preset-select {
+          width: 100%;
+          padding: var(--space-10) var(--space-12); /* Adjusted padding */
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-base);
+          color: var(--color-white);
+          font-family: var(--font-body);
+          font-size: var(--font-size-base);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+          appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300f3ff' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right var(--space-12) center;
+          background-size: 16px;
+          padding-right: var(--space-32); /* Keep space for caret */
+        }
+        
+        .preset-select:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+        
+        .preset-select:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.2);
+        }
+        
+        /* Time Display */
+        .time-display {
+          background: var(--glass-bg);
+          border: 2px solid var(--glass-border);
+          border-radius: var(--radius-xl);
+          padding: var(--space-24) var(--space-16); /* Adjusted padding */
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 50px var(--glow-color);
+          position: relative;
+          overflow: hidden;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .time-display::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+          animation: scanLine 3s linear infinite;
+        }
+        
+        @keyframes scanLine {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+        
+        .time-display.running {
+          border-color: var(--color-running);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 50px rgba(57, 255, 20, 0.5);
+        }
+        
+        .time-display.paused {
+          border-color: var(--color-paused);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 50px rgba(255, 170, 0, 0.5);
+        }
+        
+        .time-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
+          gap: var(--space-4);
+          margin-bottom: var(--space-16); /* Reduced margin */
+        }
+        
+        .time-segment {
+          font-family: var(--font-display);
+          font-size: var(--font-size-4xl);
+          font-weight: 900;
+          color: var(--color-idle);
+          text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+          transition: color var(--duration-normal) var(--ease-standard);
+          min-width: 1.2em;
+          text-align: center;
+        }
+        
+        .time-display.running .time-segment {
+          color: var(--color-running);
+          animation: digitPulse 1s infinite;
+        }
+        
+        .time-display.paused .time-segment {
+          color: var(--color-paused);
+        }
+        
+        @keyframes digitPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
+        }
+        
+        .time-separator {
+          font-family: var(--font-display);
+          font-size: var(--font-size-4xl);
+          font-weight: 900;
+          color: rgba(255, 255, 255, 0.3);
+          animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+          0%, 49%, 100% { opacity: 1; }
+          50%, 99% { opacity: 0.3; }
+        }
+        
+        .milliseconds {
+          font-size: var(--font-size-2xl);
+          opacity: 0.8;
+        }
+        
+        .milliseconds-sep {
+          font-size: var(--font-size-2xl);
+        }
+        
+        /* Status Indicator */
+        .status-indicator {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-8);
+          font-size: var(--font-size-xs); /* Smaller font */
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: var(--color-idle);
+          box-shadow: 0 0 10px currentColor;
+          animation: statusPulse 2s infinite;
+        }
+        
+        .time-display.running .status-dot {
+          background: var(--color-running);
+          animation: statusPulse 1s infinite;
+        }
+        
+        .time-display.paused .status-dot {
+          background: var(--color-paused);
+          animation: none;
+        }
+        
+        @keyframes statusPulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        /* Controls */
+        .controls {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: var(--space-12); /* Slightly reduced gap */
+        }
+        
+        .control-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: var(--space-4); /* Reduced gap */
+          padding: var(--space-16) var(--space-8); /* Adjusted padding */
+          background: var(--glass-bg);
+          border: 2px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          color: var(--color-white);
+          font-family: var(--font-body);
+          font-size: var(--font-size-xs); /* Smaller font */
+          font-weight: 700;
+          letter-spacing: 1px;
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .control-btn::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+          transform: translate(-50%, -50%);
+          transition: width var(--duration-slow) var(--ease-standard), height var(--duration-slow) var(--ease-standard);
+        }
+        
+        .control-btn:hover::before {
+          width: 300px;
+          height: 300px;
+        }
+        
+        .control-btn:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 30px var(--glow-color);
+          transform: translateY(-2px);
+        }
+        
+        .control-btn:active {
+          transform: translateY(0) scale(0.95);
+        }
+        
+        .control-btn:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
+        
+        .btn-icon {
+          width: 28px; /* Slightly smaller icon */
+          height: 28px;
+          position: relative;
+          z-index: 1;
+        }
+        
+        .btn-label {
+          position: relative;
+          z-index: 1;
+        }
+        
+        .btn-start {
+          border-color: var(--color-running);
+        }
+        
+        .btn-start:hover {
+          box-shadow: 0 0 30px rgba(57, 255, 20, 0.5);
+        }
+        
+        .btn-lap {
+          border-color: var(--primary-color);
+        }
+        
+        .btn-reset {
+          border-color: var(--color-paused);
+        }
+        
+        .btn-reset:hover {
+          box-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
+        }
+        
+        /* Study Stats */
+        .study-stats {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: var(--space-12); /* Reduced gap */
+        }
+        
+        .stat-item {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-base);
+          padding: var(--space-12); /* Reduced padding */
+          text-align: center;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .stat-label {
+          display: block;
+          font-size: var(--font-size-xs);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: rgba(255, 255, 255, 0.6);
+          margin-bottom: var(--space-4);
+        }
+        
+        .stat-value {
+          display: block;
+          font-family: var(--font-display);
+          font-size: var(--font-size-lg); /* Slightly smaller value */
+          font-weight: 700;
+          color: var(--primary-color);
+          text-shadow: 0 0 10px currentColor;
+        }
+        
+        /* Lap Section */
+        .lap-section {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-16); /* Reduced padding */
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lap-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: var(--space-12); /* Reduced margin */
+          padding-bottom: var(--space-8); /* Reduced padding */
+          border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .lap-title {
+          font-family: var(--font-display);
+          font-size: var(--font-size-md); /* Smaller title */
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: var(--primary-color);
+          text-shadow: 0 0 10px currentColor;
+        }
+        
+        .lap-actions {
+          display: flex;
+          gap: var(--space-8);
+        }
+        
+        .lap-action-btn {
+          display: flex;
+          align-items: center;
+          gap: var(--space-4);
+          padding: var(--space-6) var(--space-8); /* Adjusted padding */
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-sm);
+          color: var(--color-white);
+          font-family: var(--font-body);
+          font-size: 10px; /* Smaller font */
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .lap-action-btn svg {
+          width: 12px; /* Smaller icon */
+          height: 12px;
+        }
+        
+        .lap-action-btn:hover:not(:disabled) {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 15px var(--glow-color);
+        }
+        
+        .lap-action-btn:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+        }
+        
+        .lap-list {
+          max-height: 250px; /* Reduced max height */
+          overflow-y: auto;
+          scrollbar-width: thin;
+          scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0.3);
+        }
+        
+        .lap-list::-webkit-scrollbar {
+          width: 6px; /* Narrower scrollbar */
+        }
+        
+        .lap-list::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.3);
+          border-radius: var(--radius-sm);
+        }
+        
+        .lap-list::-webkit-scrollbar-thumb {
+          background: var(--primary-color);
+          border-radius: var(--radius-sm);
+          box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        .empty-laps {
+          text-align: center;
+          padding: var(--space-32) var(--space-16); /* Adjusted padding */
+          color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .empty-laps svg {
+          width: 32px; /* Smaller icon */
+          height: 32px;
+          margin-bottom: var(--space-12);
+          opacity: 0.3;
+        }
+        
+        .empty-hint {
+          font-size: var(--font-size-sm);
+          margin-top: var(--space-8);
+        }
+        
+        .lap-item {
+          display: grid;
+          grid-template-columns: 40px 1fr auto auto; /* Adjusted columns */
+          gap: var(--space-8); /* Reduced gap */
+          align-items: center;
+          padding: var(--space-8); /* Reduced padding */
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid transparent;
+          border-radius: var(--radius-base);
+          margin-bottom: var(--space-6); /* Reduced margin */
+          transition: all var(--duration-normal) var(--ease-standard);
+          animation: lapSlideIn 0.3s var(--ease-standard);
+        }
+        
+        @keyframes lapSlideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .lap-item:hover {
+          background: rgba(0, 0, 0, 0.4);
+          border-color: var(--glass-border);
+        }
+        
+        .lap-item.fastest {
+          border-color: var(--color-fastest);
+          background: rgba(57, 255, 20, 0.1);
+        }
+        
+        .lap-item.slowest {
+          border-color: var(--color-slowest);
+          background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .lap-number {
+          font-family: var(--font-display);
+          font-size: var(--font-size-xs); /* Smaller font */
+          font-weight: 700;
+          color: var(--primary-color);
+          text-align: center;
+        }
+        
+        .lap-time {
+          font-family: var(--font-display);
+          font-size: var(--font-size-sm); /* Smaller font */
+          font-weight: 700;
+          color: var(--color-white);
+          word-break: break-all; /* Prevent overflow */
+        }
+        
+        .lap-split {
+          font-size: var(--font-size-xs); /* Smaller font */
+          color: rgba(255, 255, 255, 0.6);
+          white-space: nowrap; /* Prevent wrapping */
+        }
+        
+        .lap-delete {
+          padding: var(--space-4);
+          background: transparent;
+          border: 1px solid transparent;
+          border-radius: var(--radius-sm);
+          color: rgba(255, 255, 255, 0.4);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .lap-delete svg {
+          width: 14px; /* Smaller icon */
+          height: 14px;
+          display: block;
+        }
+        
+        .lap-delete:hover {
+          color: var(--color-slowest);
+          border-color: var(--color-slowest);
+        }
+        
+        .lap-badge {
+          font-size: 8px; /* Smaller badge */
+          padding: 1px 6px;
+          border-radius: var(--radius-full);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          white-space: nowrap; /* Prevent wrapping */
+        }
+        
+        .lap-badge.fastest {
+          background: rgba(57, 255, 20, 0.2);
+          color: var(--color-fastest);
+          border: 1px solid var(--color-fastest);
+        }
+        
+        .lap-badge.slowest {
+          background: rgba(255, 107, 107, 0.2);
+          color: var(--color-slowest);
+          border: 1px solid var(--color-slowest);
+        }
+        
+        /* Corner Buttons */
+        .fullscreen-btn,
+        .settings-btn,
+        .help-btn {
+          position: fixed;
+          width: 40px; /* Smaller buttons */
+          height: 40px;
+          background: var(--glass-bg);
+          border: 2px solid var(--glass-border);
+          border-radius: 50%;
+          color: var(--primary-color);
+          cursor: pointer;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          transition: all var(--duration-normal) var(--ease-standard);
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+          top: var(--space-12); /* Adjusted position */
+        }
+        
+        .fullscreen-btn {
+          right: var(--space-12);
+        }
+        
+        .settings-btn {
+          right: 60px; /* (12 + 40 + 8) */
+        }
+        
+        .help-btn {
+          right: 108px; /* (60 + 40 + 8) */
+        }
+        
+        .fullscreen-btn:hover,
+        .settings-btn:hover{
+          border-color: var(--primary-color);
+          box-shadow: 0 0 30px var(--glow-color);
+          transform: scale(1.1) rotate(90deg);
+        }
+       
+        .help-btn:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 30px var(--glow-color);
+          transform: scale(1.1) rotate(360deg);
+        }
+        
+        .fullscreen-btn svg,
+        .settings-btn svg,
+        .help-btn svg {
+          width: 20px; /* Smaller icons */
+          height: 20px;
+          transition: transform var(--duration-normal) var(--ease-standard);
+        }
+        
+        /* Modal */
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          z-index: 1000;
+          animation: fadeIn 0.3s var(--ease-standard);
+          justify-content: center;
+          align-items: center;
+          padding: var(--space-16); /* Reduced padding */
+        }
+        
+        .modal.active {
+          display: flex;
+        }
+        
+        .modal-content {
+          background: var(--glass-bg);
+          border: 2px solid var(--glass-border);
+          border-radius: var(--radius-xl);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 50px var(--glow-color);
+          max-width: 95vw; /* Allow wider modal on small screens */
+          width: 100%;
+          max-height: 85vh; /* Allow taller modal */
+          overflow-y: auto;
+          animation: modalSlideIn 0.3s var(--ease-standard);
+        }
+        
+        @keyframes modalSlideIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+        
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--space-16); /* Reduced padding */
+          border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .modal-header h2 {
+          font-family: var(--font-display);
+          font-size: var(--font-size-lg); /* Smaller header */
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: var(--primary-color);
+          text-shadow: 0 0 10px currentColor;
+        }
+        
+        .modal-close {
+          width: 32px; /* Smaller close button */
+          height: 32px;
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: 50%;
+          color: var(--color-white);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .modal-close:hover {
+          border-color: var(--color-slowest);
+          color: var(--color-slowest);
+          transform: rotate(90deg);
+        }
+        
+        .modal-close svg {
+          width: 18px; /* Smaller icon */
+          height: 18px;
+        }
+        
+        .modal-body {
+          padding: var(--space-16); /* Reduced padding */
+        }
+        
+        /* Settings */
+        .setting-group {
+          margin-bottom: var(--space-24); /* Reduced margin */
+        }
+        
+        .setting-group:last-child {
+          margin-bottom: 0;
+        }
+        
+        .setting-group h3 {
+          font-family: var(--font-display);
+          font-size: var(--font-size-sm); /* Smaller header */
+          font-weight: 700;
+          letter-spacing: 1px;
+          margin-bottom: var(--space-12);
+          color: rgba(255, 255, 255, 0.8);
+          text-transform: uppercase;
+        }
+        
+        .theme-selector {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* Keep 2 columns */
+          gap: var(--space-8); /* Reduced gap */
+        }
+        
+        .theme-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: var(--space-8);
+          padding: var(--space-12); /* Reduced padding */
+          background: rgba(0, 0, 0, 0.3);
+          border: 2px solid var(--glass-border);
+          border-radius: var(--radius-base);
+          color: var(--color-white);
+          font-family: var(--font-body);
+          font-size: var(--font-size-xs); /* Smaller font */
+          font-weight: 600;
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .theme-btn:hover {
+          border-color: var(--theme-primary);
+          box-shadow: 0 0 20px var(--theme-primary);
+        }
+        
+        .theme-btn.active {
+          border-color: var(--theme-primary);
+          background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .theme-preview {
+          width: 32px; /* Smaller preview */
+          height: 32px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+          box-shadow: 0 0 20px var(--theme-primary);
+        }
+        
+        .setting-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--space-12); /* Reduced padding */
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-base);
+          margin-bottom: var(--space-8); /* Reduced margin */
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .setting-item:hover {
+          background: rgba(0, 0, 0, 0.4);
+          border-color: var(--primary-color);
+        }
+        
+        .setting-item span {
+          font-size: var(--font-size-sm); /* Smaller font */
+          font-weight: 500;
+        }
+        
+        .toggle-switch {
+          position: relative;
+          width: 44px; /* Smaller switch */
+          height: 24px;
+          appearance: none;
+          background: rgba(0, 0, 0, 0.5);
+          border: 2px solid var(--glass-border);
+          border-radius: var(--radius-full);
+          cursor: pointer;
+          transition: all var(--duration-normal) var(--ease-standard);
+        }
+        
+        .toggle-switch::before {
+          content: '';
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          width: 16px; /* Smaller handle */
+          height: 16px;
+          background: var(--color-white);
+          border-radius: 50%;
+          transition: all var(--duration-normal) var(--ease-standard);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch:checked {
+          background: var(--primary-color);
+          border-color: var(--primary-color);
+        }
+        
+        .toggle-switch:checked::before {
+          left: 22px; /* Adjusted position */
+          box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        /* Keyboard Shortcuts */
+        .shortcut-list {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-8); /* Reduced gap */
+        }
+        
+        .shortcut-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--space-12); /* Reduced padding */
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-base);
+        }
+        
+        .shortcut-item kbd {
+          padding: var(--space-6) var(--space-12); /* Adjusted padding */
+          background: rgba(0, 0, 0, 0.5);
+          border: 2px solid var(--primary-color);
+          border-radius: var(--radius-sm);
+          font-family: var(--font-display);
+          font-size: var(--font-size-xs); /* Smaller font */
+          font-weight: 700;
+          color: var(--primary-color);
+          text-shadow: 0 0 10px currentColor;
+          box-shadow: 0 0 15px var(--glow-color);
+        }
+        
+        .shortcut-item span {
+          font-size: var(--font-size-sm); /* Smaller font */
+          color: rgba(255, 255, 255, 0.8);
+          margin-left: var(--space-8); /* Add space */
+        }
+        
+        /* Responsive Design Adjustments */
+        @media (max-width: 768px) {
+          .container {
+            padding: var(--space-16);
+            gap: var(--space-16); /* Reduce overall gap */
+          }
+        
+          .title {
+            font-size: var(--font-size-2xl); /* Already adjusted */
+          }
+        
+          .time-segment {
+            font-size: var(--font-size-3xl); /* Already adjusted */
+          }
+        
+          .milliseconds {
+            font-size: var(--font-size-lg); /* Already adjusted */
+          }
+        
+          /* Controls already set to 1 column */
+          .controls {
+              gap: var(--space-12); /* Already adjusted */
+          }
+        
+          /* Stats already set to 1 column */
+        
+          .theme-selector {
+            grid-template-columns: 1fr; /* Already adjusted */
+          }
+        
+          .lap-item {
+            grid-template-columns: 40px 1fr auto; /* Adjusted for smaller screen */
+            font-size: var(--font-size-xs); /* Smaller font */
+            gap: var(--space-8);
+            padding: var(--space-8);
+          }
+        
+          .lap-split {
+            grid-column: 2 / 3; /* Split on same line as time */
+            margin-top: 0;
+            text-align: right;
+          }
+        
+          .lap-delete {
+            grid-column: 3 / 4; /* Move delete button */
+          }
+        
+          .lap-badge {
+            grid-column: 1 / -1; /* Badge spans full width below */
+            text-align: center;
+            margin-top: var(--space-4);
+            justify-self: center;
+            width: fit-content;
+          }
+          /* Corner buttons already adjusted */
+        }
+        
+        @media (max-width: 480px) {
+          .container {
+              padding: var(--space-12); /* Further reduce padding */
+              gap: var(--space-12); /* Further reduce gap */
+          }
+          .header {
+              padding: var(--space-16) 0 var(--space-8) 0; /* Adjust header padding */
+          }
+          .title {
+            font-size: var(--font-size-xl);
+            gap: var(--space-8);
+          }
+        
+          .title-icon {
+            font-size: var(--font-size-xl);
+          }
+        
+          .time-display {
+              padding: var(--space-16) var(--space-12); /* Further reduce padding */
+          }
+
+          .time-segment {
+            font-size: var(--font-size-2xl);
+            min-width: 1.1em; /* Adjust min-width */
+          }
+          .time-separator {
+            font-size: var(--font-size-2xl);
+          }
+          .milliseconds, .milliseconds-sep {
+             font-size: var(--font-size-base); /* Make ms smaller */
+          }
+          
+          .control-btn {
+              padding: var(--space-12) var(--space-8); /* Smaller button padding */
+              gap: var(--space-4);
+          }
+          .btn-icon {
+              width: 24px; /* Smaller icons */
+              height: 24px;
+          }
+
+          .lap-list {
+              max-height: 200px; /* Further reduce lap list height */
+          }
+          
+          /* Corner buttons */
+          .fullscreen-btn, .settings-btn, .help-btn {
+              width: 36px; /* Even smaller */
+              height: 36px;
+              top: var(--space-8);
+          }
+           .fullscreen-btn { right: var(--space-8); }
+           .settings-btn { right: 52px; } /* 8 + 36 + 8 */
+           .help-btn { display: none; } /* Hide help on very small screens */
+
+           .fullscreen-btn svg, .settings-btn svg {
+               width: 18px;
+               height: 18px;
+           }
+           
+           .modal-content {
+               max-height: 90vh; /* Allow modal to take more height */
+           }
+        }
+        
+        /* Fullscreen Styles */
+        :fullscreen .container,
+        :-webkit-full-screen .container,
+        :-moz-full-screen .container,
+        :-ms-fullscreen .container {
+          max-width: 100%;
+          padding: var(--space-24); /* Adjusted padding for fullscreen */
+        }
+        
+        /* Print Styles */
+        @media print {
+          .animated-bg,
+          .fullscreen-btn,
+          .settings-btn,
+          .help-btn,
+          .controls {
+            display: none;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="grid-overlay"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Fullscreen Button -->
+    <button class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle Fullscreen" title="Toggle Fullscreen (F)">
+        <svg class="fullscreen-icon" id="fullscreenIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+    </button>
+
+    <!-- Settings Button -->
+    <button class="settings-btn" id="settingsBtn" aria-label="Open Settings" title="Settings (S)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 9V2 M12 15v7 M15 12h7 M9 12H2 M14.1 9.9l5-5 M9.9 14.1l-5 5 M14.1 14.1l5 5 M9.9 9.9l-5-5"/>
+    </svg>
+</button>
+
+    <!-- Help Button -->
+    <button class="help-btn" id="helpBtn" aria-label="Keyboard Shortcuts" title="Keyboard Shortcuts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01"/>
+            <path d="M12 17h.01"/>
+        </svg>
+    </button>
+
+    <!-- Main Container -->
+    <main class="container" id="mainContainer">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">
+                <span class="title-icon">⏱</span>
+                STOPWATCH PRO
+                <span class="title-badge">FUTURISTIC</span>
+            </h1>
+            <p class="subtitle">Professional Timing Solution</p>
+        </header>
+
+        <!-- Preset Timer Selection -->
+        <div class="preset-section">
+            <label for="presetSelect" class="preset-label">Quick Timer Preset:</label>
+            <select id="presetSelect" class="preset-select">
+                <option value="">-- Select Preset --</option>
+                <option value="1500">🍅 Pomodoro Work (25 min)</option>
+                <option value="300">☕ Pomodoro Break (5 min)</option>
+                <option value="3000">📚 Class Session (50 min)</option>
+                <option value="900">⏸️ Short Break (15 min)</option>
+                <option value="7200">📖 Long Study (2 hours)</option>
+            </select>
+        </div>
+
+        <!-- Time Display -->
+        <div class="time-display" id="timeDisplay">
+            <div class="time-wrapper">
+                <span class="time-segment hours" id="hours">00</span>
+                <span class="time-separator">:</span>
+                <span class="time-segment minutes" id="minutes">00</span>
+                <span class="time-separator">:</span>
+                <span class="time-segment seconds" id="seconds">00</span>
+                <span class="time-separator milliseconds-sep">.</span>
+                <span class="time-segment milliseconds" id="milliseconds">000</span>
+            </div>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span class="status-text">READY</span>
+            </div>
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="controls">
+            <button class="control-btn btn-start" id="startBtn" aria-label="Start/Pause">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path id="playIcon" d="M8 5v14l11-7z"/>
+                    <g id="pauseIcon" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16"/>
+                        <rect x="14" y="4" width="4" height="16"/>
+                    </g>
+                </svg>
+                <span class="btn-label">START</span>
+            </button>
+            <button class="control-btn btn-lap" id="lapBtn" aria-label="Record Lap" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <span class="btn-label">LAP</span>
+            </button>
+            <button class="control-btn btn-reset" id="resetBtn" aria-label="Reset" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="1 4 1 10 7 10"/>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+                <span class="btn-label">RESET</span>
+            </button>
+        </div>
+
+        <!-- Study Stats -->
+        <div class="study-stats" id="studyStats">
+            <div class="stat-item">
+                <span class="stat-label">Laps Recorded</span>
+                <span class="stat-value" id="totalLaps">0</span>
+            </div>
+        </div>
+
+        <!-- Lap Times Section -->
+        <div class="lap-section" id="lapSection">
+            <div class="lap-header">
+                <h2 class="lap-title">LAP TIMES</h2>
+                <div class="lap-actions">
+                    <button class="lap-action-btn" id="exportBtn" title="Export Laps" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5l5 5 5-5m-5 5V3"/>
+                        </svg>
+                        Export
+                    </button>
+                    <button class="lap-action-btn" id="clearLapsBtn" title="Clear All Laps" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Clear
+                    </button>
+                </div>
+            </div>
+            <div class="lap-list" id="lapList">
+                <div class="empty-laps">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <p>No laps recorded yet</p>
+                    <p class="empty-hint">Press LAP or 'L' to record</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content settings-content">
+            <div class="modal-header">
+                <h2>⚙️ SETTINGS</h2>
+                <button class="modal-close" id="closeSettings" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <h3>Theme Color</h3>
+                    <div class="theme-selector">
+                        <button class="theme-btn" data-theme="cyan" style="--theme-primary: #00f3ff; --theme-secondary: #0099ff;" title="Cyan Neon">
+                            <span class="theme-preview"></span>
+                            <span>Cyan</span>
+                        </button>
+                        <button class="theme-btn" data-theme="purple" style="--theme-primary: #9d4edd; --theme-secondary: #c77dff;" title="Purple Hologram">
+                            <span class="theme-preview"></span>
+                            <span>Purple</span>
+                        </button>
+                        <button class="theme-btn" data-theme="green" style="--theme-primary: #39ff14; --theme-secondary: #00ff41;" title="Green Matrix">
+                            <span class="theme-preview"></span>
+                            <span>Green</span>
+                        </button>
+                        <button class="theme-btn" data-theme="orange" style="--theme-primary: #ff6b35; --theme-secondary: #ff9f1c;" title="Orange Plasma">
+                            <span class="theme-preview"></span>
+                            <span>Orange</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h3>Display Options</h3>
+                    <label class="setting-item">
+                        <span>Show Milliseconds</span>
+                        <input type="checkbox" id="showMilliseconds" class="toggle-switch">
+                    </label>
+                    <label class="setting-item">
+                        <span>Sound Effects</span>
+                        <input type="checkbox" id="soundEffects" class="toggle-switch">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content help-content">
+            <div class="modal-header">
+                <h2>⌨️ KEYBOARD SHORTCUTS</h2>
+                <button class="modal-close" id="closeHelp" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcut-list">
+                    <div class="shortcut-item">
+                        <kbd>SPACE</kbd>
+                        <span>Start/Pause Timer</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>R</kbd>
+                        <span>Reset Timer</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>L</kbd>
+                        <span>Record Lap</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>F</kbd>
+                        <span>Toggle Fullscreen</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>S</kbd>
+                        <span>Open Settings</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>ESC</kbd>
+                        <span>Close Modal/Exit Fullscreen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BUG FIX: Create a single, reusable AudioContext ---
+        let audioContext = null;
+        const getAudioContext = () => {
+          // --- FIX 1: AudioContext Initialization ---
+          // Initialize on first interaction if needed
+          if (!audioContext && (window.AudioContext || window.webkitAudioContext)) {
+              try {
+                  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                  // Attempt to resume immediately after creation, in case it starts suspended
+                  if (audioContext.state === 'suspended') {
+                      audioContext.resume().catch(e => console.error("AudioContext resume failed:", e));
+                  }
+              } catch (e) {
+                  console.error("AudioContext not supported or failed to initialize", e);
+                  return null;
+              }
+          }
+          // Resume context if it was suspended (e.g., by interaction outside the window)
+          if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume().catch(e => console.error("AudioContext resume failed:", e));
+          }
+          return audioContext;
+        };
+
+        // Stopwatch State
+        let isRunning = false;
+        let isPaused = false;
+        let startTime = 0;
+        let elapsedTime = 0;
+        let animationFrame = null;
+        let laps = [];
+        
+        // Mode and Countdown state
+        let mode = 'stopwatch'; // 'stopwatch' or 'countdown'
+        let countdownFrom = 0; // The starting time for a countdown
+        let countdownOriginalDuration = 0; // The full duration of the countdown
+
+        // Settings keys
+        const SETTINGS_KEY = 'stopwatchSettings';
+        
+        // Default Settings
+        let settings = {
+          showMilliseconds: true,
+          soundEffects: true,
+          theme: 'cyan'
+        };
+        
+        // Theme colors
+        const themes = {
+          cyan: { primary: '#00f3ff', secondary: '#0099ff' },
+          purple: { primary: '#9d4edd', secondary: '#c77dff' },
+          green: { primary: '#39ff14', secondary: '#00ff41' },
+          orange: { primary: '#ff6b35', secondary: '#ff9f1c' }
+        };
+        
+        // DOM Elements
+        const timeDisplay = document.getElementById('timeDisplay');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const millisecondsEl = document.getElementById('milliseconds');
+        const statusText = document.querySelector('.status-text');
+        
+        const startBtn = document.getElementById('startBtn');
+        const lapBtn = document.getElementById('lapBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        
+        const lapList = document.getElementById('lapList');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearLapsBtn = document.getElementById('clearLapsBtn');
+        const totalLapsEl = document.getElementById('totalLaps');
+        
+        const presetSelect = document.getElementById('presetSelect');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const helpBtn = document.getElementById('helpBtn');
+        
+        const settingsModal = document.getElementById('settingsModal');
+        const helpModal = document.getElementById('helpModal');
+        const closeSettings = document.getElementById('closeSettings');
+        const closeHelp = document.getElementById('closeHelp');
+        
+        const showMillisecondsToggle = document.getElementById('showMilliseconds');
+        const soundEffectsToggle = document.getElementById('soundEffects');
+        const themeBtns = document.querySelectorAll('.theme-btn');
+        
+        // Initialize particles
+        function createParticles() {
+          const particlesContainer = document.getElementById('particles');
+          if (!particlesContainer) return; // Handle if element doesn't exist
+          const particleCount = 20; // Reduced for performance on mobile
+          
+          for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            particlesContainer.appendChild(particle);
+          }
+        }
+        
+        // Format time
+        function formatTime(ms) {
+          // Handle countdown edge case where ms might be slightly negative
+          const safeMs = Math.max(0, ms);
+          const hours = Math.floor(safeMs / 3600000);
+          const minutes = Math.floor((safeMs % 3600000) / 60000);
+          const seconds = Math.floor((safeMs % 60000) / 1000);
+          const milliseconds = Math.floor((safeMs % 1000));
+          
+          return {
+            hours: String(hours).padStart(2, '0'),
+            minutes: String(minutes).padStart(2, '0'),
+            seconds: String(seconds).padStart(2, '0'),
+            milliseconds: String(milliseconds).padStart(3, '0')
+          };
+        }
+        
+        // Update display
+        function updateDisplay() {
+          const time = formatTime(elapsedTime);
+          
+          hoursEl.textContent = time.hours;
+          minutesEl.textContent = time.minutes;
+          secondsEl.textContent = time.seconds;
+          
+          if (settings.showMilliseconds) {
+            millisecondsEl.textContent = time.milliseconds;
+            millisecondsEl.style.display = '';
+            document.querySelector('.milliseconds-sep').style.display = '';
+          } else {
+            millisecondsEl.style.display = 'none';
+            document.querySelector('.milliseconds-sep').style.display = 'none';
+          }
+        }
+        
+        // Animation loop
+        function animate() {
+          if (isRunning && !isPaused) {
+            
+            if (mode === 'stopwatch') {
+                elapsedTime = Date.now() - startTime;
+            } else { // countdown
+                const timePassed = Date.now() - startTime;
+                elapsedTime = countdownFrom - timePassed;
+                
+                if (elapsedTime <= 0) {
+                    elapsedTime = 0;
+                    updateDisplay();
+                    
+                    playSound(880, 200); // Play "done" sound
+                    setTimeout(() => playSound(880, 200), 300);
+                    
+                    reset(true); 
+                    return;
+                }
+            }
+            
+            updateDisplay();
+            animationFrame = requestAnimationFrame(animate);
+          }
+        }
+        
+        // Play sound effect
+        function playSound(frequency = 440, duration = 100) {
+          if (!settings.soundEffects) return;
+          const ac = getAudioContext(); // Use the getter
+          if (!ac || ac.state !== 'running') return; // Fail silently if AC not available or not running
+          
+          try {
+            const oscillator = ac.createOscillator();
+            const gainNode = ac.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(ac.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            // Smoother volume ramp
+            gainNode.gain.setValueAtTime(0, ac.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.1, ac.currentTime + 0.01); 
+            gainNode.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration / 1000);
+            
+            oscillator.start(ac.currentTime);
+            oscillator.stop(ac.currentTime + duration / 1000);
+          } catch (e) {
+            console.error("Sound play error:", e); // Log the error
+          }
+        }
+      
+  // Start/Pause
+        function toggleStartPause() {
+          getAudioContext(); // Ensure context is active on interaction
+          
+          // This is the condition for PAUSING:
+          // The timer must be running AND not already paused.
+          if (isRunning && !isPaused) {
+            // --- PAUSE LOGIC ---
+            isPaused = true;
+            timeDisplay.classList.remove('running');
+            timeDisplay.classList.add('paused');
+            statusText.textContent = 'PAUSED';
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            startBtn.querySelector('.btn-label').textContent = 'RESUME';
+            lapBtn.disabled = true; // Always disable lap when paused
+            cancelAnimationFrame(animationFrame);
+            playSound(392.00, 50); // G4
+
+          } else {
+            // --- START or RESUME LOGIC ---
+            // This block runs if the timer is stopped (isRunning=false)
+            // OR if it's paused (isPaused=true).
+            
+            if (isPaused) {
+                // RESUME
+                if (mode === 'countdown') {
+                    startTime = Date.now();
+                    countdownFrom = elapsedTime; // The new "from" is the remaining time
+                } else { // stopwatch
+                    startTime = Date.now() - elapsedTime;
+                }
+                isPaused = false;
+            } else {
+                // START (from 0 or preset)
+                if (mode === 'countdown') {
+                    startTime = Date.now();
+                    countdownFrom = elapsedTime; // elapsedTime was set by preset
+                } else { // stopwatch
+                    startTime = Date.now() - elapsedTime; // elapsedTime is 0
+                }
+                // Only set isRunning to true on a fresh start
+                isRunning = true; 
+            }
+            
+            // --- Common UI updates for both START and RESUME ---
+            timeDisplay.classList.add('running');
+            timeDisplay.classList.remove('paused');
+            statusText.textContent = 'RUNNING';
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+            startBtn.querySelector('.btn-label').textContent = 'PAUSE';
+            lapBtn.disabled = (mode === 'countdown'); // Disable lap in countdown
+            resetBtn.disabled = false;
+            
+            // Start the animation loop
+            animate();
+            playSound(523.25, 50); // C5
+          }
+        }
+
+        // Reset
+        function reset(countdownFinished = false) {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          isRunning = false;
+          isPaused = false;
+          elapsedTime = 0;
+          startTime = 0;
+          mode = 'stopwatch'; // Default to stopwatch
+          countdownFrom = 0;
+          countdownOriginalDuration = 0; 
+          
+          if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+          }
+          
+          updateDisplay();
+          timeDisplay.classList.remove('running', 'paused');
+          statusText.textContent = 'READY';
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+          startBtn.querySelector('.btn-label').textContent = 'START';
+          lapBtn.disabled = true;
+          resetBtn.disabled = true;
+          
+          updateStats(); // Update the display
+          saveSettings(); // Save settings
+          
+          playSound(293.66, 100); // D4
+        }
+        
+        // Record lap
+        function recordLap() {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          // Laps only work in stopwatch mode and when running
+          if (!isRunning || mode === 'countdown') return;
+          
+          const lapTime = elapsedTime;
+          const splitTime = laps.length > 0 ? lapTime - laps[laps.length - 1].time : lapTime;
+          
+          laps.push({
+            number: laps.length + 1,
+            time: lapTime,
+            split: splitTime
+          });
+          
+          updateLapList();
+          updateStats();
+          playSound(659.25, 80); // E5
+        }
+        
+        // Update lap list
+        function updateLapList() {
+          if (laps.length === 0) {
+            lapList.innerHTML = `
+              <div class="empty-laps">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <p>No laps recorded yet</p>
+                <p class="empty-hint">Press LAP or 'L' to record</p>
+              </div>
+            `;
+            exportBtn.disabled = true;
+            clearLapsBtn.disabled = true;
+            return;
+          }
+          
+          exportBtn.disabled = false;
+          clearLapsBtn.disabled = false;
+          
+          // Find fastest and slowest
+          const splits = laps.map(lap => lap.split);
+          const fastest = Math.min(...splits);
+          const slowest = Math.max(...splits);
+          
+          lapList.innerHTML = laps
+            .map(lap => {
+              const lapTime = formatTime(lap.time);
+              const splitTime = formatTime(lap.split);
+              const isFastest = laps.length > 1 && lap.split === fastest;
+              const isSlowest = laps.length > 1 && lap.split === slowest;
+
+              // --- FIX 2: Use data-lap-number attribute ---
+              return `
+                <div class="lap-item ${isFastest ? "fastest" : ""} ${
+                isSlowest ? "slowest" : ""
+              }" data-lap-number="${lap.number}">
+                  <div class="lap-number">#${lap.number}</div>
+                  <div class="lap-time">${lapTime.hours}:${lapTime.minutes}:${
+                lapTime.seconds
+              }.${lapTime.milliseconds}</div>
+                  <div class="lap-split">+${splitTime.minutes}:${
+                splitTime.seconds
+              }.${splitTime.milliseconds}</div>
+                  <button class="lap-delete" aria-label="Delete lap ${lap.number}"> 
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                  ${isFastest ? '<span class="lap-badge fastest">Fastest</span>' : ""}
+                  ${isSlowest ? '<span class="lap-badge slowest">Slowest</span>' : ""}
+                </div>
+              `;
+            })
+            .reverse()
+            .join("");
+        }
+
+        // --- FIX 2: Event delegation for delete ---
+        function handleDeleteLapClick(event) {
+            const deleteButton = event.target.closest('.lap-delete');
+            if (!deleteButton) return; // Click wasn't on a delete button
+
+            const lapItem = deleteButton.closest('.lap-item');
+            if (!lapItem) return;
+
+            const lapNumber = parseInt(lapItem.dataset.lapNumber, 10);
+            if (isNaN(lapNumber)) return;
+
+            deleteLap(lapNumber);
+        }
+        
+        // Delete lap (called by event delegation)
+        function deleteLap(lapNumber) {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          const index = laps.findIndex(lap => lap.number === lapNumber);
+          if (index !== -1) {
+            laps.splice(index, 1);
+            
+            // Renumber laps and recalculate splits
+            let prevTime = 0;
+            for (let i = 0; i < laps.length; i++) {
+                laps[i].number = i + 1;
+                // Recalculate split time based on new previous lap
+                laps[i].split = laps[i].time - prevTime;
+                prevTime = laps[i].time;
+            }
+
+            updateLapList();
+            updateStats();
+            playSound(349.23, 50); // F4
+          }
+        }
+        
+        // Clear all laps
+        function clearLaps() {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          laps = [];
+          updateLapList();
+          updateStats();
+          playSound(293.66, 100); // D4
+        }
+        
+        // Export laps as CSV
+        function exportLaps() {
+          if (laps.length === 0) return;
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          
+          let csv = 'Lap Number,Lap Time,Split Time\n';
+          
+          laps.forEach(lap => {
+            const lapTime = formatTime(lap.time);
+            const splitTime = formatTime(lap.split);
+            csv += `${lap.number},"${lapTime.hours}:${lapTime.minutes}:${lapTime.seconds}.${lapTime.milliseconds}","${splitTime.minutes}:${splitTime.seconds}.${splitTime.milliseconds}"\n`;
+          });
+          
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); // Added charset
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `stopwatch-laps-${Date.now()}.csv`;
+          document.body.appendChild(a); // Required for Firefox
+          a.click();
+          document.body.removeChild(a); // Clean up
+          URL.revokeObjectURL(url);
+          
+          playSound(523.25, 100); // C5
+        }
+        
+        // Update stats
+        function updateStats() {
+          totalLapsEl.textContent = laps.length;
+        }
+        
+        // Preset timer
+        function loadPreset() {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          const seconds = parseInt(presetSelect.value);
+          const selectedOption = presetSelect.options[presetSelect.selectedIndex]; // Get option
+          
+          if (isNaN(seconds) || seconds === 0) {
+            // If user selected "-- Select Preset --"
+            if (elapsedTime === 0) { // Only reset if timer is not already set
+                reset();
+            }
+             presetSelect.value = '';
+            return;
+          }
+          
+          reset(); 
+          
+          mode = 'countdown'; // Set countdown mode
+          countdownOriginalDuration = seconds * 1000; 
+          countdownFrom = seconds * 1000;
+          elapsedTime = countdownFrom;
+          updateDisplay();
+          resetBtn.disabled = false; // Enable reset
+          lapBtn.disabled = true; // Disable lap
+          presetSelect.value = '';
+          playSound(440, 80); // A4
+        }
+        
+        // Fullscreen toggle
+        function toggleFullscreen() {
+          getAudioContext(); // --- FIX 1: Ensure context is active on interaction ---
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch((err) => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+            playSound(587.33, 50); // D5
+          } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch((err) => {
+                     console.error(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
+                });
+                playSound(493.88, 50); // B4
+            }
+          }
+        }
+        
+        // Update fullscreen icon
+        function updateFullscreenIcon() {
+          const icon = document.getElementById('fullscreenIcon');
+          if (!icon) return; // Element might not exist
+          if (document.fullscreenElement) {
+            icon.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>';
+          } else {
+            icon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>';
+          }
+        }
+
+        // Save Settings
+        function saveSettings() {
+            try {
+                localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+            } catch (e) {
+                console.warn("Could not save settings to localStorage.", e);
+            }
+        }
+
+        // Load Settings
+        function loadSettings() {
+            let savedSettings = {};
+            try {
+                const savedSettingsJSON = localStorage.getItem(SETTINGS_KEY);
+                if (savedSettingsJSON) {
+                    savedSettings = JSON.parse(savedSettingsJSON);
+                }
+            } catch (e) {
+                console.warn("Could not load settings from localStorage.", e);
+            }
+
+            // Merge saved settings into defaults, ensuring no old keys persist
+            settings = {
+              showMilliseconds: savedSettings.showMilliseconds ?? true,
+              soundEffects: savedSettings.soundEffects ?? true,
+              theme: savedSettings.theme ?? 'cyan'
+            };
+            
+            // Apply loaded (or default) settings
+            applyTheme(settings.theme, false); // Apply theme without playing sound initially
+            showMillisecondsToggle.checked = settings.showMilliseconds;
+            soundEffectsToggle.checked = settings.soundEffects;
+        }
+        
+        // Apply theme
+        function applyTheme(themeName, playSoundEffect = true) {
+          settings.theme = themeName;
+          const theme = themes[themeName];
+          if (!theme) {
+              console.warn(`Theme "${themeName}" not found. Defaulting to cyan.`);
+              themeName = 'cyan';
+              theme = themes.cyan;
+          }
+          document.documentElement.style.setProperty('--primary-color', theme.primary);
+          document.documentElement.style.setProperty('--secondary-color', theme.secondary);
+          document.documentElement.style.setProperty('--glow-color', theme.primary + '80');
+          document.documentElement.style.setProperty('--color-idle', theme.primary);
+          
+          themeBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.theme === themeName) {
+              btn.classList.add('active');
+            }
+          });
+          
+          if (playSoundEffect) {
+            playSound(440, 50); // A4
+          }
+          saveSettings(); 
+        }
+        
+        // Keyboard shortcuts
+        function handleKeyboard(e) {
+          // Don't trigger if typing in input/textarea/select
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+          
+          // Don't trigger if modifier keys are pressed (except for Escape)
+          if ((e.metaKey || e.ctrlKey || e.altKey) && e.key !== 'Escape') return;
+
+          // Handle modal state first
+          const isModalOpen = settingsModal.classList.contains('active') || helpModal.classList.contains('active');
+          if (isModalOpen) {
+            if (e.key === 'Escape') {
+              closeModals();
+            }
+            return; // Ignore other keys if modal is open
+          }
+          
+          // Handle main shortcuts
+          switch(e.key.toLowerCase()) {
+            case ' ':
+              e.preventDefault(); // Prevent page scroll
+              toggleStartPause();
+              break;
+            case 'r':
+              if (!resetBtn.disabled) reset();
+              break;
+            case 'l':
+              if (!lapBtn.disabled) recordLap();
+              break;
+            case 'f':
+              toggleFullscreen();
+              break;
+            case 's':
+              getAudioContext(); // Ensure context is active before opening settings
+              settingsModal.classList.add('active');
+              break;
+            case 'h': // Add shortcut for help
+            case '?': 
+              getAudioContext(); // Ensure context is active before opening help
+              helpModal.classList.add('active');
+              break;
+            case 'escape':
+              if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => {});
+              }
+              // If not fullscreen, Escape doesn't do anything here (modal handled above)
+              break;
+          }
+        }
+        
+        // Close modals
+        function closeModals() {
+          settingsModal.classList.remove('active');
+          helpModal.classList.remove('active');
+          playSound(349.23, 50); // F4 on close
+        }
+        
+        // Event Listeners
+        startBtn.addEventListener('click', toggleStartPause);
+        lapBtn.addEventListener('click', recordLap);
+        resetBtn.addEventListener('click', reset);
+        exportBtn.addEventListener('click', exportLaps);
+        clearLapsBtn.addEventListener('click', clearLaps);
+        presetSelect.addEventListener('change', loadPreset);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        settingsBtn.addEventListener('click', () => {
+            getAudioContext(); // Ensure audio is ready on settings click
+            settingsModal.classList.add('active');
+            playSound(440, 50); // A4 on open
+        });
+        helpBtn.addEventListener('click', () => {
+             getAudioContext(); // Ensure audio is ready on help click
+            helpModal.classList.add('active');
+            playSound(440, 50); // A4 on open
+        });
+        closeSettings.addEventListener('click', closeModals);
+        closeHelp.addEventListener('click', closeModals);
+        
+        // Settings toggles
+        showMillisecondsToggle.addEventListener('change', (e) => {
+          settings.showMilliseconds = e.target.checked;
+          updateDisplay();
+          playSound(440, 50);
+          saveSettings(); 
+        });
+        
+        soundEffectsToggle.addEventListener('change', (e) => {
+          settings.soundEffects = e.target.checked;
+          saveSettings(); 
+          if (e.target.checked) {
+            // Play sound only if turning *on*
+            getAudioContext(); // Ensure context ready
+            playSound(523.25, 100);
+          }
+        });
+        
+        // Theme buttons
+        themeBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            getAudioContext(); // Ensure context ready
+            applyTheme(btn.dataset.theme);
+          });
+        });
+        
+        // Modal click outside to close
+        settingsModal.addEventListener('click', (e) => {
+          if (e.target === settingsModal) closeModals();
+        });
+        
+        helpModal.addEventListener('click', (e) => {
+          if (e.target === helpModal) closeModals();
+        });
+        
+        // Keyboard events
+        document.addEventListener('keydown', handleKeyboard);
+        
+        // Fullscreen change event
+        document.addEventListener('fullscreenchange', updateFullscreenIcon);
+
+        // --- FIX 2: Add event listener for lap deletion ---
+        lapList.addEventListener('click', handleDeleteLapClick);
+        
+        // Initialize
+        createParticles();
+        loadSettings(); 
+        updateDisplay();
+        updateStats(); 
+        updateFullscreenIcon(); // Set initial icon state
+
+        // --- REMOVED FIX 2: Remove global deleteLap ---
+        // window.deleteLap = deleteLap;
+
+    </script>
+</body>
+</html>
+

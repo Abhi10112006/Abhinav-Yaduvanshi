@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhinav Yaduvanshi | The Website</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f1f5f9;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(23, 23, 23, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glowing-border {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+        .glowing-border::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: conic-gradient(
+                transparent,
+                rgba(129, 140, 248, 0.5),
+                transparent 30%
+            );
+            animation: rotate 6s linear infinite;
+        }
+        .glowing-border > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Card Flip Effect */
+        .project-card-wrapper {
+            perspective: 1000px;
+            height: 420px; 
+            cursor: pointer;
+        }
+
+        .project-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* This class will be toggled by JavaScript on click/tap */
+        .project-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .project-card-front, .project-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+        }
+
+        .project-card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Particle.js Background -->
+    <div id="particles-js"></div>
+
+    <div class="relative z-10">
+        <!-- Header / Navigation -->
+        <header class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#" class="text-xl font-bold gradient-text">AY</a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#about" class="text-slate-300 hover:text-sky-400 transition-colors duration-300">About</a>
+                    <a href="#projects" class="text-slate-300 hover:text-sky-400 transition-colors duration-300">Projects</a>
+                    <a href="#contact" class="text-slate-300 hover:text-sky-400 transition-colors duration-300">Contact</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-6">
+            <!-- Hero Section -->
+            <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center">
+                <div class="max-w-3xl">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight">
+                        <span class="block text-slate-200">Hi, I'm</span>
+                        <span class="block gradient-text mt-2">Abhinav Yaduvanshi</span>
+                    </h1>
+                    <p class="mt-6 text-lg md:text-xl text-slate-400 max-w-xl mx-auto">
+                        A student crafting modern, responsive, and engaging web experiences. Welcome to my digital playground.
+                    </p>
+                    <div class="mt-8 flex justify-center gap-4">
+                        <a href="#projects" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-8 rounded-lg transition-transform duration-300 transform hover:scale-105">
+                            View My Work
+                        </a>
+                        <a href="https://x.com/Abhinav_1289Y?t=tGanAYNcpE23Yootml4x0Q&s=08" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-3 px-8 rounded-lg transition-transform duration-300 transform hover:scale-105">
+                            X (Twitter) 
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="py-20 lg:py-32">
+                 <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold">
+                        <span class="gradient-text">About Me</span>
+                    </h2>
+                    <p class="mt-4 text-slate-400">A little bit about my journey and skills.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                   <div class="glowing-border">
+                        <div class="p-8 bg-[#111111] rounded-xl">
+                       <video class="rounded-lg shadow-2xl w-full h-auto" autoplay loop muted playsinline>
+            <source src="A.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+                     </video>     
+                 </div>
+                   </div>
+                    <div class="space-y-6">
+                        <p class="text-slate-300 text-lg leading-relaxed">
+                            Hello! I'm Abhinav. I'm a curious person who loves exploring new technology and keeping up with the latest gadgets and innovations. In my free time, I enjoy watching movies, webseries and doing coding.
+                        </p>
+                        <p class="text-slate-300 text-lg leading-relaxed">
+                            I love to experimenting with content creation and I'm also deeply interested in culture, history, science and geopolitics. I'm finding engaging ways to share these ideas.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-slate-800 text-sky-300 text-sm font-medium px-4 py-2 rounded-full">JavaScript</span>
+                            <span class="bg-slate-800 text-sky-300 text-sm font-medium px-4 py-2 rounded-full">React</span>
+                            <span class="bg-slate-800 text-sky-300 text-sm font-medium px-4 py-2 rounded-full">Tailwind CSS</span>
+                            <span class="bg-slate-800 text-sky-300 text-sm font-medium px-4 py-2 rounded-full">HTML</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="py-20 lg:py-32">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold">
+                        <span class="gradient-text">My Projects</span>
+                    </h2>
+                    <p class="mt-4 text-slate-400 max-w-2xl mx-auto">
+                        Here are some of the projects I've worked on. Feel free to see them live.
+                    </p>
+                </div>
+                
+                <div id="project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </section>
+            
+            <!-- Contact Section -->
+            <section id="contact" class="py-20 lg:py-32 text-center">
+                 <div class="max-w-2xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold">
+                        <span class="gradient-text">Get In Touch</span>
+                    </h2>
+                    <p class="mt-4 text-slate-400 mb-8">
+                        I'm always open to discussing new projects, creative ideas. Feel free to reach out!
+                    </p>
+                    <a href="mailto:abhiyaduvanshi@zohomail.in" class="inline-block bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-transform duration-300 transform hover:scale-105">
+                        Say Hello
+                    </a>
+                 </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-slate-800 py-8">
+            <div class="container mx-auto px-6 text-center text-slate-500">
+                <p>&copy; <span id="year"></span> Abhinav Yaduvanshi. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            const projectsData = [
+                   {title: "Ledger",
+                    description: "A high-performance, installable financial tracking application designed for personal lending with various features.",
+                    imageUrl: "https://placehold.co/600x400/0a0a0a/ff2e97?text=Ledger",
+                    tags: ["Typescript", "HTML", "PWA", "JavaScript"],
+                    projectUrl: "https://ledger69.vercel.app/",
+                },
+               {
+                    title: "Diwali Greetings",
+                    description: "An immersive and interactive digital greeting card to celebrate Diwali with a dynamic fireworks simulation.",
+                    imageUrl: "diwali.jpg",
+                    tags: ["HTML", "CSS", "JavaScript"],
+                    projectUrl: "https://diwaligreeting2025.netlify.app/",
+                },  
+                {
+                    title: "Rig Veda Hub",
+                    description: "An AI-powered platform designed for the delightful exploration of ancient Vedic wisdom.",
+                    imageUrl: "rigveda.jpeg",
+                    tags: ["HTML", "CSS", "JavaScript"],
+                    projectUrl: "https://rigvedahub.netlify.app/",
+                },                                    
+                {
+                    title: "VSEPR 3D Visualizer",
+                    description: "Instantly visualize any 3D molecular structure and get clear, AI-powered explanations with this interactive tool.",
+                    imageUrl: "https://placehold.co/600x400/0a0a0a/38bdf8?text=3D+Visualizer",
+                    tags: ["React", "Node.js", "HTML", "Tailwind CSS"],
+                    projectUrl: "VSEPR_3D_Visualizer.html",
+                },
+               {
+                    title: "Stopwatch",
+                    description: "A futuristic-themed web stopwatch and countdown timer with customizable themes.",
+                    imageUrl: "stopwatch.jpg",
+                    tags: ["HTML", "CSS", "JavaScript"],
+                    projectUrl: "stopwatch.html",
+                }, 
+                {
+                    title: "The Website",
+                    description: "The very website you are looking at! A dynamic application to showcase my work and skills.",
+                    imageUrl: "https://placehold.co/600x400/0a0a0a/c084fc?text=The+Website",
+                    tags: ["HTML", "Tailwind CSS", "JavaScript"],
+                    projectUrl: "https://abhiyaduvanshi.netlify.app/",
+                },
+            ];
+
+            const projectGrid = document.getElementById('project-grid');
+
+            projectsData.forEach(project => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'project-card-wrapper';
+
+                const cardInner = document.createElement('div');
+                cardInner.className = 'project-card-inner';
+
+                let tagsHtml = project.tags.map(tag => `<span class="bg-slate-800 text-sky-300 text-xs font-medium px-3 py-1 rounded-full">${tag}</span>`).join(' ');
+
+                // Card Front
+                const cardFront = document.createElement('div');
+                cardFront.className = 'project-card-front glass-card';
+                cardFront.innerHTML = `
+                    <div class="w-full h-full bg-[#111111]/80 flex flex-col">
+                        <img src="${project.imageUrl}" alt="${project.title}" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-2xl font-bold text-slate-100 mb-2">${project.title}</h3>
+                            <p class="text-slate-400 mb-4 flex-grow">${project.description}</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${tagsHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Card Back
+                const cardBack = document.createElement('div');
+                cardBack.className = 'project-card-back glass-card';
+                cardBack.innerHTML = `
+                    <div class="w-full h-full bg-[#111111]/80 flex flex-col justify-center items-center p-6">
+                         <h3 class="text-2xl font-bold text-slate-100 mb-4">${project.title}</h3>
+                         <a href="${project.projectUrl}" target="_blank" rel="noopener noreferrer" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition-transform duration-300 transform hover:scale-105">
+                            View Project
+                        </a>
+                    </div>
+                `;
+
+                cardInner.appendChild(cardFront);
+                cardInner.appendChild(cardBack);
+                wrapper.appendChild(cardInner);
+                projectGrid.appendChild(wrapper);
+            });
+            
+            // Add click event listener for card flipping on all devices
+            const cardWrappers = document.querySelectorAll('.project-card-wrapper');
+            cardWrappers.forEach(wrapper => {
+                wrapper.addEventListener('click', () => {
+                    const cardInner = wrapper.querySelector('.project-card-inner');
+                    // Prevent the link on the back from being triggered when flipping back
+                    if (cardInner.classList.contains('is-flipped')) {
+                        const link = cardInner.querySelector('a');
+                        if (event.target === link) {
+                            return; // Allow link to work
+                        }
+                    }
+                    cardInner.classList.toggle('is-flipped');
+                });
+            });
+
+            // Initialize Particle.js
+            particlesJS('particles-js', {
+                "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#818cf8" }, "shape": { "type": "circle" }, "opacity": { "value": 0.5, "random": false }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#818cf8", "opacity": 0.2, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "out_mode": "out" } },
+                "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }, "modes": { "repulse": { "distance": 150, "duration": 0.4 }, "push": { "particles_nb": 4 } } },
+                "retina_detect": true
+            });
+
+            // Initialize ScrollReveal
+            const sr = ScrollReveal({
+                origin: 'bottom',
+                distance: '50px',
+                duration: 800,
+                delay: 200,
+                easing: 'cubic-bezier(0.5, 0, 0, 1)',
+                reset: false
+            });
+
+            sr.reveal('#hero h1, #hero p, #hero div');
+            sr.reveal('#about > div', { origin: 'left', interval: 200 });
+            sr.reveal('#projects h2, #projects p', { origin: 'top' });
+            sr.reveal('#project-grid > div', { interval: 150 });
+            sr.reveal('#contact > div', { origin: 'bottom' });
+
+        });
+    </script>
+</body>
+</html>
+
+

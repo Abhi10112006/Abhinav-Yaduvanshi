@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSEPR 3D Visualizer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Markdown & LaTeX Support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .glass-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Typography */
+        .prose h1, .prose h2, .prose h3 { color: #f8fafc; font-weight: 700; margin-top: 1.2em; margin-bottom: 0.5em; }
+        .prose p { margin-bottom: 1em; line-height: 1.6; color: #cbd5e1; }
+        .prose strong { color: #93c5fd; font-weight: 600; }
+        .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; color: #cbd5e1; }
+        .katex { font-size: 1.1em; color: #e2e8f0; }
+
+        /* Animations */
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fade-in 0.3s ease-out forwards; }
+        
+        /* Fullscreen Helper */
+        .fullscreen-active {
+            position: fixed !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 50;
+            height: 100vh !important;
+            width: 100vw !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="glass-panel sticky top-0 z-40 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-tr from-blue-500 to-purple-500 p-2 rounded-lg shadow-lg shadow-blue-500/20">
+                        <i data-lucide="atom" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-white">VSEPR Viz <span class="text-blue-400 text-sm font-normal">v3.0</span></span>
+                </div>
+                <button id="settings-btn" class="p-2 hover:bg-white/10 rounded-lg transition-colors text-gray-400 hover:text-white" title="API Settings">
+                    <i data-lucide="key" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 gap-8 grid grid-cols-1 lg:grid-cols-12">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-4 space-y-6">
+            
+            <!-- Sliders -->
+            <div class="glass-panel rounded-2xl p-6 shadow-xl animate-fade">
+                <h2 class="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-5 h-5 text-blue-400"></i> Configuration
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm text-gray-300 font-medium">Bonding Pairs</label>
+                            <span id="bond-val" class="text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded">2</span>
+                        </div>
+                        <input type="range" id="bond-pairs" min="2" max="7" value="2" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm text-gray-300 font-medium">Lone Pairs</label>
+                            <span id="lone-val" class="text-purple-400 font-bold bg-purple-500/10 px-2 py-0.5 rounded">0</span>
+                        </div>
+                        <input type="range" id="lone-pairs" min="0" max="4" value="0" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                    </div>
+                </div>
+
+                <!-- Presets -->
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Load</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="2" data-l="0">CO₂ (Linear)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="4" data-l="0">CH₄ (Tetrahedral)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="3" data-l="1">NH₃ (Pyramidal)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="2" data-l="2">H₂O (Bent)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="6" data-l="0">SF₆ (Octahedral)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="7" data-l="0">IF₇ (Pent. Bipy)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="6" data-l="1">XeF₆ (Dist. Oct)</button>
+                        <button class="preset-btn glass-input hover:bg-white/10 hover:border-white/30 py-2 px-3 rounded-lg text-xs transition-all text-left" data-b="5" data-l="2">XeF₅⁻ (Pent. Planar)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="glass-panel rounded-2xl p-6 shadow-xl animate-fade" style="animation-delay: 0.1s;">
+                <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="activity" class="w-5 h-5 text-green-400"></i> Geometry Data
+                </h2>
+                <div class="space-y-3">
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                        <span class="text-xs text-gray-400 block mb-1">Molecular Geometry</span>
+                        <span id="geo-mol" class="text-lg font-bold text-white tracking-wide">Linear</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                        <span class="text-xs text-gray-400 block mb-1">Electron Geometry</span>
+                        <span id="geo-elec" class="text-md font-medium text-gray-200">Linear</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                         <div class="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span class="text-xs text-gray-400 block mb-1">Bond Angle</span>
+                            <span id="angle" class="text-md font-bold text-blue-300">180°</span>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span class="text-xs text-gray-400 block mb-1">Hybridization</span>
+                            <span id="hybrid" class="text-md font-bold text-purple-300">sp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas & AI Column -->
+        <div class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- 3D Canvas -->
+            <div id="canvas-wrapper" class="glass-panel rounded-2xl p-1 shadow-2xl relative h-[500px] overflow-hidden group transition-all duration-300">
+                <div id="canvas-container" class="w-full h-full rounded-xl bg-slate-900/50"></div>
+                
+                <!-- Canvas Controls -->
+                <div class="absolute bottom-4 left-4 flex gap-2 z-10">
+                    <button id="toggle-rotate" class="bg-slate-800/80 hover:bg-slate-700 text-white p-2 rounded-lg backdrop-blur-sm transition-all border border-white/10 shadow-lg" title="Toggle Auto-Rotate">
+                        <i data-lucide="rotate-cw" class="w-5 h-5"></i>
+                    </button>
+                    <button id="reset-view" class="bg-slate-800/80 hover:bg-slate-700 text-white p-2 rounded-lg backdrop-blur-sm transition-all border border-white/10 shadow-lg" title="Reset Camera">
+                        <i data-lucide="camera" class="w-5 h-5"></i>
+                    </button>
+                    <button id="toggle-fullscreen" class="bg-slate-800/80 hover:bg-slate-700 text-white p-2 rounded-lg backdrop-blur-sm transition-all border border-white/10 shadow-lg" title="Fullscreen">
+                        <i data-lucide="maximize" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Legend -->
+                <div class="absolute top-4 right-4 bg-slate-800/80 backdrop-blur-md p-3 rounded-lg border border-white/10 text-xs space-y-2 pointer-events-none z-10 shadow-lg">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div> Central Atom</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div> Bonded Atom</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-green-400/50 border border-green-400"></div> Lone Pair</div>
+                </div>
+
+                <!-- Error Overlay -->
+                <div id="canvas-message" class="hidden absolute inset-0 bg-slate-900/95 flex items-center justify-center z-20 backdrop-blur-sm">
+                    <div class="text-center p-8 border border-white/10 rounded-2xl bg-white/5">
+                        <i data-lucide="alert-triangle" class="w-12 h-12 text-yellow-500 mx-auto mb-4"></i>
+                        <p class="text-xl font-bold text-white mb-1">Impossible Configuration</p>
+                        <p class="text-sm text-gray-400">Total electron domains cannot exceed 7.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Section -->
+            <div class="glass-panel rounded-2xl p-6 animate-fade" style="animation-delay: 0.2s;">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-yellow-400"></i> AI Molecular Analysis
+                        </h2>
+                        <p class="text-sm text-gray-400 mt-1">Generate detailed explanations using Google Gemini.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <button id="explain-current-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                        <i data-lucide="info" class="w-4 h-4"></i> Explain Current Shape
+                    </button>
+                    <div class="flex gap-2">
+                        <input type="text" id="formula-input" placeholder="e.g., XeF4" class="glass-input w-full px-4 py-2.5 rounded-lg text-sm">
+                        <button id="analyze-formula-btn" class="bg-purple-600 hover:bg-purple-500 text-white font-medium py-2.5 px-4 rounded-lg transition-colors shadow-lg shadow-purple-500/20">
+                            Analyze
+                        </button>
+                    </div>
+                </div>
+
+                <div id="ai-output-container" class="hidden bg-slate-900/50 rounded-xl p-6 border border-white/5 min-h-[100px]">
+                    <div id="ai-loading" class="hidden flex flex-col items-center justify-center py-8">
+                        <div class="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+                        <span class="text-sm text-gray-400 animate-pulse">Consulting the digital chemist...</span>
+                    </div>
+                    <div id="ai-content" class="prose text-sm text-gray-300 leading-relaxed"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- API Key Modal -->
+    <div id="api-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass-panel bg-slate-900 p-6 rounded-2xl max-w-md w-full shadow-2xl border-blue-500/30">
+            <h3 class="text-xl font-bold text-white mb-4">API Configuration</h3>
+            <p class="text-sm text-gray-400 mb-4">To use the AI features, please enter your Google Gemini API Key. It will be saved locally in your browser.</p>
+            <input type="password" id="api-key-input" placeholder="Paste API Key here..." class="glass-input w-full px-4 py-3 rounded-lg mb-4 text-sm">
+            <div class="flex justify-end gap-3">
+                <button id="close-modal-btn" class="text-gray-400 hover:text-white text-sm">Cancel</button>
+                <button id="save-api-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-lg transition-colors">Save Key</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">Don't have a key? Get one from <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-400 hover:underline">Google AI Studio</a>.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 mt-auto bg-slate-900 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2025 VSEPR Visualizer. Powered by Three.js & Gemini.</p>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // --- MATH CONSTANTS ---
+        const PI = Math.PI;
+        const DEG72 = (2 * PI) / 5;
+
+        // --- GEOMETRY DATA ---
+        
+        // Pentagonal Bipyramidal Base
+        const PBP_AXIAL_TOP = [0, 1.8, 0];
+        const PBP_AXIAL_BOTTOM = [0, -1.8, 0];
+        const PBP_EQ = [];
+        for(let i=0; i<5; i++) {
+            PBP_EQ.push([1.5 * Math.cos(i * DEG72), 0, 1.5 * Math.sin(i * DEG72)]);
+        }
+
+        // Distorted Octahedral (C3v) - 6 Atoms, 1 Face-Capped LP
+        const DO_POSITIONS = [
+            [1.4, -0.4, -0.4], [-0.4, 1.4, -0.4], [-0.4, -0.4, 1.4], // Adjacent to hole
+            [-1.4, -0.2, -0.2], [-0.2, -1.4, -0.2], [-0.2, -0.2, -1.4] // Opposite
+        ];
+
+        const VSEPR_DATA = {
+            2: { 0: { name: 'Linear', eGeo: 'Linear', angles: '180°', hyb: 'sp', pos: [[1.5,0,0], [-1.5,0,0]] } },
+            3: { 
+                0: { name: 'Trigonal Planar', eGeo: 'Trigonal Planar', angles: '120°', hyb: 'sp²', pos: [[1.5,0,0], [-0.75, 1.3, 0], [-0.75, -1.3, 0]] },
+                1: { name: 'Bent', eGeo: 'Trigonal Planar', angles: '<120°', hyb: 'sp²', pos: [[1.5,0,0], [-0.75, 1.3, 0]] }
+            },
+            4: { 
+                0: { name: 'Tetrahedral', eGeo: 'Tetrahedral', angles: '109.5°', hyb: 'sp³', pos: [[0.9, 0.9, 0.9], [-0.9, -0.9, 0.9], [-0.9, 0.9, -0.9], [0.9, -0.9, -0.9]] },
+                1: { name: 'Trigonal Pyramidal', eGeo: 'Tetrahedral', angles: '<109.5°', hyb: 'sp³', pos: [[0.9, 0.9, 0.9], [-0.9, -0.9, 0.9], [-0.9, 0.9, -0.9]] },
+                2: { name: 'Bent', eGeo: 'Tetrahedral', angles: '<109.5°', hyb: 'sp³', pos: [[0.9, 0.9, 0.9], [-0.9, -0.9, 0.9]] }
+            },
+            5: { 
+                0: { name: 'Trigonal Bipyramidal', eGeo: 'Trigonal Bipyramidal', angles: '90°, 120°', hyb: 'sp³d', pos: [[0,1.8,0], [0,-1.8,0], [1.5,0,0], [-0.75,0,1.3], [-0.75,0,-1.3]] },
+                1: { name: 'Seesaw', eGeo: 'Trigonal Bipyramidal', angles: '<90°, <120°', hyb: 'sp³d', pos: [[0,1.8,0], [0,-1.8,0], [1.5,0,0], [-0.75,0,1.3]] }, 
+                2: { name: 'T-Shaped', eGeo: 'Trigonal Bipyramidal', angles: '<90°', hyb: 'sp³d', pos: [[0,1.8,0], [0,-1.8,0], [1.5,0,0]] }, 
+                3: { name: 'Linear', eGeo: 'Trigonal Bipyramidal', angles: '180°', hyb: 'sp³d', pos: [[0,1.8,0], [0,-1.8,0]] }
+            },
+            6: { 
+                0: { name: 'Octahedral', eGeo: 'Octahedral', angles: '90°', hyb: 'sp³d²', pos: [[1.5,0,0], [-1.5,0,0], [0,1.5,0], [0,-1.5,0], [0,0,1.5], [0,0,-1.5]] },
+                1: { name: 'Square Pyramidal', eGeo: 'Octahedral', angles: '<90°', hyb: 'sp³d²', pos: [[1.5,0,0], [-1.5,0,0], [0,1.5,0], [0,0,1.5], [0,0,-1.5]] },
+                2: { name: 'Square Planar', eGeo: 'Octahedral', angles: '90°', hyb: 'sp³d²', pos: [[1.5,0,0], [-1.5,0,0], [0,0,1.5], [0,0,-1.5]] },
+                3: { name: 'T-Shaped', eGeo: 'Octahedral', angles: '<90°', hyb: 'sp³d²', pos: [[1.5,0,0], [0,1.5,0], [0,-1.5,0]] },
+                4: { name: 'Linear', eGeo: 'Octahedral', angles: '180°', hyb: 'sp³d²', pos: [[0,1.5,0], [0,-1.5,0]] }
+            },
+            7: {
+                0: { name: 'Pentagonal Bipyramidal', eGeo: 'Pentagonal Bipyramidal', angles: '72°, 90°', hyb: 'sp³d³', pos: [PBP_AXIAL_TOP, PBP_AXIAL_BOTTOM, ...PBP_EQ] },
+                1: { name: 'Distorted Octahedral', eGeo: 'Pentagonal Bipyramidal', angles: '<90° (Distorted)', hyb: 'sp³d³', pos: DO_POSITIONS },
+                2: { name: 'Pentagonal Planar', eGeo: 'Pentagonal Bipyramidal', angles: '72°', hyb: 'sp³d³', pos: [...PBP_EQ] }
+            }
+        };
+
+        // --- SCENE SETUP ---
+        let scene, camera, renderer, controls, composer;
+        let modelGroup, atomMaterial, centralMaterial, bondMaterial, lonePairMaterial;
+        let autoRotate = true;
+
+        function init3D() {
+            const container = document.getElementById('canvas-container');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(4, 3, 5);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            container.appendChild(renderer.domElement);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = autoRotate;
+            controls.autoRotateSpeed = 2.0;
+
+            // Lights
+            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+            mainLight.position.set(5, 5, 5);
+            scene.add(mainLight);
+            const fillLight = new THREE.DirectionalLight(0x4c1d95, 0.8);
+            fillLight.position.set(-5, 0, -5);
+            scene.add(fillLight);
+            const rimLight = new THREE.SpotLight(0x3b82f6, 2);
+            rimLight.position.set(0, 5, 0);
+            scene.add(rimLight);
+
+            // Materials
+            centralMaterial = new THREE.MeshPhysicalMaterial({ color: 0x3b82f6, metalness: 0.2, roughness: 0.1, clearcoat: 0.8 });
+            atomMaterial = new THREE.MeshPhysicalMaterial({ color: 0xef4444, metalness: 0.2, roughness: 0.1, clearcoat: 0.8 });
+            bondMaterial = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.3, metalness: 0.5 });
+            lonePairMaterial = new THREE.MeshPhysicalMaterial({ color: 0x4ade80, transparent: true, opacity: 0.4, roughness: 0.1, transmission: 0.6, thickness: 0.5, side: THREE.DoubleSide });
+
+            modelGroup = new THREE.Group();
+            scene.add(modelGroup);
+
+            // Post-Processing
+            const renderScene = new RenderPass(scene, camera);
+            const bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 0.2; bloomPass.strength = 0.4; bloomPass.radius = 0.5;
+            
+            composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            window.addEventListener('resize', onWindowResize);
+            animate();
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('canvas-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            composer.setSize(width, height);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            const time = Date.now() * 0.002;
+            modelGroup.children.forEach(child => {
+                if (child.userData.isLonePair) {
+                    child.scale.setScalar(1 + Math.sin(time) * 0.05); // Breathing effect
+                }
+            });
+            composer.render();
+        }
+
+        // --- DRAWING LOGIC ---
+        function drawMolecule(bondPairs, lonePairs) {
+            while(modelGroup.children.length) modelGroup.remove(modelGroup.children[0]); 
+            
+            const total = bondPairs + lonePairs;
+            if (total > 7 || total < 2) {
+                document.getElementById('canvas-message').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('canvas-message').classList.add('hidden');
+
+            const centralMesh = new THREE.Mesh(new THREE.SphereGeometry(0.6, 64, 64), centralMaterial);
+            modelGroup.add(centralMesh);
+
+            const data = VSEPR_DATA[total]?.[lonePairs];
+            
+            if (data && data.pos) {
+                // Bonds
+                data.pos.forEach(pArr => {
+                    const pos = new THREE.Vector3(...pArr);
+                    const atomMesh = new THREE.Mesh(new THREE.SphereGeometry(0.45, 32, 32), atomMaterial);
+                    atomMesh.position.copy(pos);
+                    modelGroup.add(atomMesh);
+
+                    const bondGeo = new THREE.CylinderGeometry(0.12, 0.12, pos.length() - 0.8, 16);
+                    bondGeo.rotateX(Math.PI / 2);
+                    const bondMesh = new THREE.Mesh(bondGeo, bondMaterial);
+                    bondMesh.lookAt(pos);
+                    bondMesh.position.copy(pos.clone().multiplyScalar(0.5));
+                    modelGroup.add(bondMesh);
+                });
+
+                // Lone Pairs
+                getLonePairVectors(total, lonePairs).forEach(v => {
+                    // Larger LP for Distorted Octahedral for visibility
+                    const scale = (total===7 && lonePairs===1) ? 1.2 : 1.0;
+                    const lpGeo = new THREE.SphereGeometry(0.4 * scale, 32, 32);
+                    lpGeo.scale(1, 0.8, 0.8); 
+                    const lpMesh = new THREE.Mesh(lpGeo, lonePairMaterial);
+                    lpMesh.position.copy(v.multiplyScalar((total===7 && lonePairs===1) ? 1.4 : 1.2));
+                    lpMesh.lookAt(new THREE.Vector3(0,0,0));
+                    lpMesh.userData.isLonePair = true;
+                    modelGroup.add(lpMesh);
+                });
+            }
+        }
+
+        function getLonePairVectors(total, lonePairs) {
+            if (lonePairs === 0) return [];
+            const vecs = [];
+            
+            if (total === 3 && lonePairs === 1) vecs.push(new THREE.Vector3(-0.75, -1.3, 0));
+            if (total === 4) {
+                if (lonePairs === 1) vecs.push(new THREE.Vector3(0.9, -0.9, -0.9));
+                if (lonePairs === 2) { vecs.push(new THREE.Vector3(-0.9, 0.9, -0.9)); vecs.push(new THREE.Vector3(0.9, -0.9, -0.9)); }
+            }
+            if (total === 5) {
+                if (lonePairs >= 1) vecs.push(new THREE.Vector3(-0.75,0,-1.3));
+                if (lonePairs >= 2) vecs.push(new THREE.Vector3(-0.75,0,1.3));
+                if (lonePairs >= 3) vecs.push(new THREE.Vector3(1.5,0,0));
+            }
+            if (total === 6) {
+                if (lonePairs >= 1) vecs.push(new THREE.Vector3(0, -1.5, 0));
+                if (lonePairs >= 2) vecs.push(new THREE.Vector3(0, 1.5, 0));
+            }
+            if (total === 7) {
+                 // AX6E1: Distorted Oct (Face Capped) - 1 LP
+                 if (lonePairs === 1) vecs.push(new THREE.Vector3(1.2, 1.2, 1.2));
+                 
+                 // AX5E2: Pent Planar - 2 LPs (Top/Bottom)
+                 if (lonePairs === 2) {
+                     vecs.push(new THREE.Vector3(0, 1.8, 0));
+                     vecs.push(new THREE.Vector3(0, -1.8, 0));
+                 }
+            }
+            return vecs;
+        }
+
+        // --- UI & STATE ---
+        const els = {
+            bond: document.getElementById('bond-pairs'),
+            lone: document.getElementById('lone-pairs'),
+            bondVal: document.getElementById('bond-val'),
+            loneVal: document.getElementById('lone-val')
+        };
+
+        function updateUI() {
+            const b = parseInt(els.bond.value);
+            const l = parseInt(els.lone.value);
+            els.bondVal.textContent = b;
+            els.loneVal.textContent = l;
+            
+            const info = VSEPR_DATA[b+l]?.[l];
+            if (info) {
+                document.getElementById('geo-mol').textContent = info.name;
+                document.getElementById('geo-elec').textContent = info.eGeo;
+                document.getElementById('angle').textContent = info.angles;
+                document.getElementById('hybrid').textContent = info.hyb;
+                drawMolecule(b, l);
+            } else {
+                ['geo-mol','geo-elec','angle','hybrid'].forEach(id => document.getElementById(id).textContent = "---");
+                drawMolecule(0,0);
+            }
+        }
+
+        [els.bond, els.lone].forEach(el => el.addEventListener('input', updateUI));
+        document.querySelectorAll('.preset-btn').forEach(btn => btn.addEventListener('click', e => {
+            els.bond.value = e.target.dataset.b;
+            els.lone.value = e.target.dataset.l;
+            updateUI();
+        }));
+
+        document.getElementById('toggle-rotate').addEventListener('click', () => { autoRotate = !autoRotate; controls.autoRotate = autoRotate; });
+        document.getElementById('reset-view').addEventListener('click', () => controls.reset());
+        
+        // Fullscreen
+        document.getElementById('toggle-fullscreen').addEventListener('click', () => {
+            document.getElementById('canvas-wrapper').classList.toggle('fullscreen-active');
+            onWindowResize();
+        });
+
+        // --- API & MODAL ---
+        const modal = document.getElementById('api-modal');
+        const keyInput = document.getElementById('api-key-input');
+        
+        function getApiKey() {
+            let key = localStorage.getItem('gemini_api_key');
+            if(!key) {
+                modal.classList.remove('hidden');
+                return null;
+            }
+            return key;
+        }
+
+        document.getElementById('settings-btn').addEventListener('click', () => {
+            keyInput.value = localStorage.getItem('gemini_api_key') || '';
+            modal.classList.remove('hidden');
+        });
+
+        document.getElementById('close-modal-btn').addEventListener('click', () => modal.classList.add('hidden'));
+        
+        document.getElementById('save-api-btn').addEventListener('click', () => {
+            const val = keyInput.value.trim();
+            if(val) {
+                localStorage.setItem('gemini_api_key', val);
+                modal.classList.add('hidden');
+            }
+        });
+
+        async function generateContent(prompt) {
+            const apiKey = getApiKey();
+            if(!apiKey) return;
+
+            const container = document.getElementById('ai-output-container');
+            const loader = document.getElementById('ai-loading');
+            const content = document.getElementById('ai-content');
+            
+            container.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            content.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt + " \nFormat: Markdown + LaTeX ($...$)" }] }] })
+                });
+                
+                if(!response.ok) throw new Error("API Request Failed");
+                
+                const data = await response.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response.";
+                content.innerHTML = marked.parse(text);
+                renderMathInElement(content, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+            } catch (err) {
+                content.innerHTML = `<span class="text-red-400">Error: ${err.message}. Check your API Key in settings.</span>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('explain-current-btn').addEventListener('click', () => {
+            const b = els.bond.value;
+            const l = els.lone.value;
+            const info = VSEPR_DATA[parseInt(b)+parseInt(l)]?.[parseInt(l)];
+            generateContent(`Explain VSEPR geometry: ${info.name}, ${b} bonds, ${l} lone pairs. Why angles ${info.angles}?`);
+        });
+
+        document.getElementById('analyze-formula-btn').addEventListener('click', () => {
+            const f = document.getElementById('formula-input').value;
+            if(f) generateContent(`Analyze VSEPR for ${f}. 1. Lewis, 2. Domains, 3. Geometry, 4. Polarity.`);
+        });
+
+        lucide.createIcons();
+        init3D();
+        updateUI();
+
+    </script>
+</body>
+</html>
+
